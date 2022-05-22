@@ -3,7 +3,7 @@ module.exports = {
     PORT: "3306",
     USER: "root",
     PASSWORD: "thiskim12!@",
-    DB: "my_db",
+    DB: "campfire",
     dialect: "mysql",
     pool: {
         max: 5,

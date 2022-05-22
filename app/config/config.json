@@ -2,14 +2,14 @@
   "development": {
     "username": "root",
     "password": "thiskim12!@",
-    "database": "test_dev",
+    "database": "campfire",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": null,
-    "database": "database_test",
+    "password": "thiskim12!@",
+    "database": "campfire_dev",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
