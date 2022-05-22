@@ -16,13 +16,36 @@ module.exports = (sequelize, DataTypes) => {
     }
     
     Member.init({
-        _id: DataTypes.INTEGER,
-        name: DataTypes.STRING,
-        nickname: DataTypes.STRING,
-        email: DataTypes.STRING,
-        password: DataTypes.STRING,
-        address: DataTypes.STRING,
-        tags: DataTypes.STRING,
+        _id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            comment: '사용자 ID',
+        },
+        name: {
+            type: DataTypes.STRING,
+            comment: '사용자 로그인 닉네임'
+        },
+        nickname: {
+            type: DataTypes.STRING,
+            comment: '사용자 닉네임'
+        },
+        email: {
+            type: DataTypes.STRING,
+            comment: '사용자 이메일'
+        },
+        password: {
+            type: DataTypes.STRING,
+            comment: '사용자 비밀번호'
+        },
+        address: {
+            type: DataTypes.STRING,
+            comment: '사용자 지역'
+        },
+        tags: {
+            type: DataTypes.STRING,
+            comment: '사용자 관심태그'
+        },
     }, {
         sequelize,
         modelName: 'Member',
