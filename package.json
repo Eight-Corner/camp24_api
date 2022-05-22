@@ -1,19 +1,25 @@
 {
-  "name": "campfire_api",
-  "version": "0.0.1",
-  "description": "campfire_api_server",
+  "name": "node_express_api",
+  "version": "1.0.0",
+  "description": "template",
   "main": "index.js",
   "scripts": {
+    "start": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eight-corner/campfire_api.git"
   },
   "author": "corner",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/eight-corner/campfire_api/issues"
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.2"
   },
-  "homepage": "https://github.com/eight-corner/campfire_api#readme"
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.16"
+  }
 }
