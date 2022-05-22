@@ -1,8 +1,9 @@
 'use strict';
+
 const {
     Model
 } = require('sequelize');
-const sql = require("./db");
+
 module.exports = (sequelize, DataTypes) => {
     class Member extends Model {
         /**
@@ -11,12 +12,14 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
+            // models.Member.hasMany(models.Tags, {foreignKey: "tag_id"});
+            
             // define association here
         }
     }
     
     Member.init({
-        _id: {
+        id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
@@ -24,32 +27,47 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: {
             type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: false,
             comment: '사용자 로그인 닉네임'
         },
         nickname: {
             type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: false,
             comment: '사용자 닉네임'
         },
         email: {
             type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: false,
             comment: '사용자 이메일'
         },
         password: {
             type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: false,
             comment: '사용자 비밀번호'
         },
         address: {
             type: DataTypes.STRING,
+            allowNull: false,
+            defaultValue: false,
             comment: '사용자 지역'
         },
-        tags: {
-            type: DataTypes.STRING,
-            comment: '사용자 관심태그'
-        },
+      
     }, {
         sequelize,
         modelName: 'Member',
     });
+    // Member.hasMany(models.Users, {foreignKey : "company_id", sourceKey:"id"});
+    // Member.associate = models => {
+    //     Member.hasMany(models.Tags, {
+    //         foreignKey: 'tag_id',
+    //         sourceKey: 'id',
+    //         onDelete: 'cascade',
+    //     });
+    // };
     return Member;
 };
 

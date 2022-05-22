@@ -64,6 +64,27 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 // routes 사용
-db.Member = require("./member.js")(sequelize, Sequelize);
+db.Member = require("./member.model.js")(sequelize, Sequelize);
+db.Tags = require("./tags.model.js")(sequelize, Sequelize);
+
+db.Member.hasMany(db.Tags, {
+    foreignKey: 'tag_id',
+    allowNull: false,
+    constraints: true,
+    onDelete: 'cascade'
+});
+db.Tags.belongsTo(db.Member, {
+  foreignKey: 'tag_id',
+});
+
+db.Tags.sync({
+  force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음
+  alter: process.env.TABLE_ALTER_SYNC === 'true'     // 개발 끝나면 false로 하기
+})
+
+db.Member.sync({
+  force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음
+  alter: process.env.TABLE_ALTER_SYNC === 'true'     // 개발 끝나면 false로 하기
+})
 
 module.exports = db;
