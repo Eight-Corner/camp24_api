@@ -1,0 +1,19 @@
+{
+  "name": "campfire_api",
+  "version": "0.0.1",
+  "description": "campfire_api_server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eight-corner/campfire_api.git"
+  },
+  "author": "corner",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eight-corner/campfire_api/issues"
+  },
+  "homepage": "https://github.com/eight-corner/campfire_api#readme"
+}
