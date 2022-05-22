@@ -4,24 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
     class Tags extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
         static associate(models) {
-            // models.Tags.belongsTo(models.Member, {foreignKey: 'tag_id'})
-            // Tags.associate = models => {
-            //     Tags.hasOne(models.Member, {
-            //         foreignKey: 'member_id',
-            //         sourceKey: 'id'
-            //     });
-            //     Tags.belongsTo(models.Member, {
-            //         foreignKey: 'tag_id',
-            //         sourceKey: 'id'
-            //     });
-            // }
-            // define association here
         }
     }
     
@@ -56,8 +39,5 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Tags',
     });
-    
-   
-    
     return Tags;
 };

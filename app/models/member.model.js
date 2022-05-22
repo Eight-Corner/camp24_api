@@ -6,14 +6,7 @@ const {
 
 module.exports = (sequelize, DataTypes) => {
     class Member extends Model {
-        /**
-         * Helper method for defining associations.
-         * This method is not a part of Sequelize lifecycle.
-         * The `models/index` file will call this method automatically.
-         */
         static associate(models) {
-            // models.Member.hasMany(models.Tags, {foreignKey: "tag_id"});
-            
             // define association here
         }
     }
@@ -60,14 +53,6 @@ module.exports = (sequelize, DataTypes) => {
         sequelize,
         modelName: 'Member',
     });
-    // Member.hasMany(models.Users, {foreignKey : "company_id", sourceKey:"id"});
-    // Member.associate = models => {
-    //     Member.hasMany(models.Tags, {
-    //         foreignKey: 'tag_id',
-    //         sourceKey: 'id',
-    //         onDelete: 'cascade',
-    //     });
-    // };
     return Member;
 };
 
