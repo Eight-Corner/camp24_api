@@ -11,11 +11,11 @@ router.get("/member", controller.findAll);
 /**
  * @swagger
  * paths:
- *  /api/user/users:
+ *  /api/member:
  *    get:
  *      summary: "유저 데이터 전체조회"
- *      description: "서버에 데이터를 보내지 않고 Get방식으로 요청"
- *      tags: [Users]
+ *      description: "모든 유저 데이터 조회"
+ *      tags: [Member]
  *      responses:
  *        "200":
  *          description: 전체 유저 정보
