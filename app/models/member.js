@@ -1,36 +1,36 @@
-/*
 'use strict';
 const {
-  Model
+    Model
 } = require('sequelize');
 const sql = require("./db");
 module.exports = (sequelize, DataTypes) => {
-  class Members extends Model {
-    /!**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     *!/
-    static associate(models) {
-      // define association here
+    class Member extends Model {
+        /**
+         * Helper method for defining associations.
+         * This method is not a part of Sequelize lifecycle.
+         * The `models/index` file will call this method automatically.
+         */
+        static associate(models) {
+            // define association here
+        }
     }
-  }
-  Members.init({
-    name: DataTypes.STRING,
-    nickname: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    address: DataTypes.STRING,
-    tags: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'Members',
-  });
-  return Members;
+    
+    Member.init({
+        _id: DataTypes.INTEGER,
+        name: DataTypes.STRING,
+        nickname: DataTypes.STRING,
+        email: DataTypes.STRING,
+        password: DataTypes.STRING,
+        address: DataTypes.STRING,
+        tags: DataTypes.STRING,
+    }, {
+        sequelize,
+        modelName: 'Member',
+    });
+    return Member;
 };
 
-*/
-module.exports = (sequelize, DataTypes) => {
+/*module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
       'Member',
       {
@@ -69,4 +69,33 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
       }
   )
+}*/
+/*
+// 생성자
+const Member = function(member) {
+    this._id = member._id;
+    this.name = member.name;
+    this.nickname = member.nickname;
+    this.email = member.email;
+    this.password = member.password;
+    this.address = member.address;
+    this.tags = member.tags;
 }
+
+Member.getAll = async res => {
+     
+        const members = await Member.findAll();
+        const result = [];
+        
+        for (const member of members) {
+            result.push({
+                id: member._id,
+                name: member.name,
+                nickname: member.nickname,
+                address: member.address,
+            });
+        }
+        res.send(result);
+}
+
+module.exports = Member;*/
