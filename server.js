@@ -27,12 +27,12 @@ app.use(cors({
 // dotenv, colors
 dotenv.config({ path: 'src/config/config.env' });
 
+const swaggerUi = require('swagger-ui-express');
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(require('./app/swagger/swagger')));
+
 // routes
-// require("./app/routes/customer.route.js")(app);
-// require("./app/routes/test.route.js")(app);
 const router = require("./app/routes/routes.js");
 app.use('/', router)
-// require("./app/routes/routes")(app);
 
 
 // Custom middleware here
