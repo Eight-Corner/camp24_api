@@ -24,7 +24,7 @@ db.sequelize = sequelize;
 db.Member = require("./member.model.js")(sequelize, Sequelize);
 db.Tags = require("./tags.model.js")(sequelize, Sequelize);
 
-db.Member.hasMany(db.Tags, {
+/*db.Member.hasMany(db.Tags, {
     foreignKey: 'tag_id',
     allowNull: false,
     constraints: true,
@@ -32,7 +32,9 @@ db.Member.hasMany(db.Tags, {
 });
 db.Tags.belongsTo(db.Member, {
   foreignKey: 'tag_id',
-});
+    allowNull: false,
+    constraints: true,
+});*/
 
 db.Tags.sync({
   force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음

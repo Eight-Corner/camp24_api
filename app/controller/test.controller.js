@@ -1,10 +1,10 @@
 const db = require("../models")
-const Members = db.Member;
+const Member = db.Member;
 const Op = db.Sequelize.Op;
 
 // 전체 조회
 exports.findAll = async (req, res) => {
-    await Members.findAll({
+    await Member.findAll({
         limit: 10,
     } ).then((data) => {
         console.log(data);
@@ -32,7 +32,7 @@ exports.create = async (req, res) => {
     }
     const {name, email, phone_number} = body;
     console.log(body);
-    await Members.create({
+    await Member.create({
         name, email, phone_number
     }).then((data) => {
        console.log("계정 생성 결과 :  " + data);

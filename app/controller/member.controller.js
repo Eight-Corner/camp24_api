@@ -38,15 +38,20 @@ exports.findOne = async (req, res) => {
 
 // 유저 생성
 exports.create = async (req, res) => {
-    if(!req.body) {
+    console.log("req--------------------",req.body);
+    if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({
            message: "Error: Body(JSON)값이 비어있습니다."
         });
     }
-    const send_tags = [];
-    if (req.body.tags) {
-        this.tag_create(req.body.tags);
+    let check = false;
+    if (req.body.tags.constructor === Object && Object.keys(req.body.tags).length !== 0) {
+       check = await this.tag_create(req.body.tags);
     }
+    if (!check) {
+        return res.status(500).send({status: 500, message: "Tags INSERT ERROR"});
+    }
+    const send_tags = [];
     console.log(send_tags);
     
     const {name, nickname, email, password, address} = req.body;
@@ -54,7 +59,6 @@ exports.create = async (req, res) => {
         name, nickname, email, password, address
     }).then((result) => {
         // TODO :: result 값에서 password를 제외
-        // TODO :: DB에 Tag 테이블을 정의하고 FK로 연결시킨 뒤 매핑시켜서 가져와야 할 듯.
         console.log("결과 ::: " + result);
         return res.status(200).send({
             status: 200,
@@ -68,17 +72,17 @@ exports.create = async (req, res) => {
 };
 
 // 태그 생성 (INSERT)
-exports.tag_create = async (tag) => {
-    console.log(tag);
-    if(tag) {
-       return false;
-    }
-    let tag1 = '', tag2 = '', tag3 = '', tag4 = '', tag5 = '';
-    tag.forEach((value, idx) => {
-        console.log(value, idx);
-    })
-    
-    await Tags.create({
-    
-    })
+exports.tag_create = async (tags) => {
+    return await Tags.create({
+        "tag1": tags.tag1,
+        "tag2": tags.tag2,
+        "tag3": tags.tag3,
+        "tag4": tags.tag4,
+        "tag5": tags.tag5,
+    }).then((result) => {
+        return true;
+    }).catch((err) => {
+        console.log(err);
+        return false;
+    });
 };

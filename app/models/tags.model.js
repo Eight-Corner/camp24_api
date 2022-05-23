@@ -5,6 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Tags extends Model {
         static associate(models) {
+            models.Tags.belongsTo(models.Member, {foreignKey: 'tag_id'});
         }
     }
     
@@ -13,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            comment: '태그 ID',
+            comment: '태그 고유키값',
         },
         tag1: {
             field: 'tag1',

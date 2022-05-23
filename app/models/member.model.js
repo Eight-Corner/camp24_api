@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     class Member extends Model {
         static associate(models) {
             // define association here
+            models.Member.hasMany(models.Tags, {foreignKey: "tag_id"})
         }
     }
     
@@ -21,31 +22,26 @@ module.exports = (sequelize, DataTypes) => {
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false,
             comment: '사용자 로그인 닉네임'
         },
         nickname: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false,
             comment: '사용자 닉네임'
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false,
             comment: '사용자 이메일'
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false,
             comment: '사용자 비밀번호'
         },
         address: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: false,
             comment: '사용자 지역'
         },
       
