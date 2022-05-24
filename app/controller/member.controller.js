@@ -45,7 +45,7 @@ exports.create = async (req, res) => {
         });
     }
     let check = false;
-    if (req.body.tags.constructor === Object && Object.keys(req.body.tags).length !== 0) {
+    if (Array.isArray(req.body.tags) && req.body.tags.length) {
        check = await this.tag_create(req.body.tags);
     }
     if (!check) {
@@ -73,12 +73,10 @@ exports.create = async (req, res) => {
 
 // 태그 생성 (INSERT)
 exports.tag_create = async (tags) => {
+    const tag = tags.toString();
+    
     return await Tags.create({
-        "tag1": tags.tag1,
-        "tag2": tags.tag2,
-        "tag3": tags.tag3,
-        "tag4": tags.tag4,
-        "tag5": tags.tag5,
+        tag
     }).then((result) => {
         return true;
     }).catch((err) => {
