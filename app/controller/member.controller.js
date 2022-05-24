@@ -44,43 +44,48 @@ exports.create = async (req, res) => {
            message: "Error: Body(JSON)값이 비어있습니다."
         });
     }
-    let check = false;
-    if (Array.isArray(req.body.tags) && req.body.tags.length) {
-       check = await this.tag_create(req.body.tags);
-    }
-    if (!check) {
-        return res.status(500).send({status: 500, message: "Tags INSERT ERROR"});
-    }
-    const send_tags = [];
-    console.log(send_tags);
-    
     const {name, nickname, email, password, address} = req.body;
     await Member.create({
         name, nickname, email, password, address
     }).then((result) => {
         // TODO :: result 값에서 password를 제외
         console.log("결과 ::: " + result);
-        return res.status(200).send({
+        /*res.status(200).send({
             status: 200,
             result: result,
             message: "success",
-        });
+        });*/
+        if (Array.isArray(req.body.tags) && req.body.tags.length) {
+            this.tag_create(req.body.tags, result.m_no).then((res) => {
+                console.log("-------------------tag result-", res.result.Tags);
+                let tag_result = res.result;
+                console.log(tag_result+ "-------------------tag result-");
+                return res.status(200).send({
+                    status: 200,
+                    result: result, tag: tag_result.result,
+                    message: "success"
+                });
+            }).catch((err) => {
+                return res.status(500).send({status: 500, message: err.message});
+            });
+        }
     }).catch((err) => {
         console.log(err);
-        res.status(500).send({status: 500, message: err.message});
+        return res.status(500).send({status: 500, message: err.message});
     });
 };
 
 // 태그 생성 (INSERT)
-exports.tag_create = async (tags) => {
+exports.tag_create = async (tags, res) => {
     const tag = tags.toString();
-    
-    return await Tags.create({
-        tag
-    }).then((result) => {
-        return true;
+    let return_type = {};
+    return await Tags.create({tag_no: res, tag}).then((result) => {
+        console.log("result::::::::",result);
+        return_type = {type: true, result: result};
+        return return_type;
     }).catch((err) => {
-        console.log(err);
-        return false;
+        console.log("err::::::::",err.message);
+        return_type = {type: false, result: err.message};
+        return return_type;
     });
 };
