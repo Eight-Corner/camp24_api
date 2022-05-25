@@ -8,15 +8,17 @@ module.exports = (sequelize, DataTypes) => {
     class Member extends Model {
         static associate(models) {
             // define association here
-            models.Member.hasMany(models.Tags, {foreignKey: "tag_id"})
+            // models.Member.hasMany(models.Tags, {foreignKey: "fk_member_id", onDelete: 'cascade'})
         }
     }
     
     Member.init({
-        id: {
+        m_no: {
+            field: 'm_no',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
+            allowNull: false,
             comment: '사용자 ID',
         },
         name: {
@@ -44,11 +46,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             comment: '사용자 지역'
         },
-      
     }, {
         sequelize,
         modelName: 'Member',
     });
+    
+    Member.associate = function (models) {
+        Member.hasMany(models.Tags);
+    };
     return Member;
 };
 

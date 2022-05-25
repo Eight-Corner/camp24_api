@@ -5,40 +5,32 @@ const {
 module.exports = (sequelize, DataTypes) => {
     class Tags extends Model {
         static associate(models) {
-            models.Tags.belongsTo(models.Member, {foreignKey: 'tag_id'});
+            // models.Tags.belongsTo(models.Member, {foreignKey: 'tag_id'});
         }
     }
     
     Tags.init({
-        id: {
+        tag_no: {
+            field: 'tag_no',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            comment: '태그 고유키값',
+            allowNull: false
         },
-        tag1: {
-            field: 'tag1',
-            type: DataTypes.STRING(10),
-        },
-        tag2: {
-            field: 'tag2',
-            type: DataTypes.STRING(10),
-        },
-        tag3: {
-            field: 'tag3',
-            type: DataTypes.STRING(10),
-        },
-        tag4: {
-            field: 'tag4',
-            type: DataTypes.STRING(10),
-        },
-        tag5: {
-            field: 'tag5',
-            type: DataTypes.STRING(10),
+        tag: {
+            field: 'tag',
+            type: DataTypes.STRING(50),
         },
     }, {
         sequelize,
+        createdAt: false,
+        updatedAt: false,
         modelName: 'Tags',
     });
+   /* Tags.associate = function (models) {
+        Tags.belongsTo(models.Member, {
+            foreignKey: "tag_no",
+        })
+    }*/
     return Tags;
 };

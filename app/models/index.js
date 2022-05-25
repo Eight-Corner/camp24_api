@@ -2,17 +2,17 @@ const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  port: dbConfig.PORT,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
-  
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle
-  }
+    host: dbConfig.HOST,
+    port: dbConfig.PORT,
+    dialect: dbConfig.dialect,
+    operatorsAliases: false,
+    
+    pool: {
+        max: dbConfig.pool.max,
+        min: dbConfig.pool.min,
+        acquire: dbConfig.pool.acquire,
+        idle: dbConfig.pool.idle
+    }
 });
 
 const db = {};
@@ -24,26 +24,26 @@ db.sequelize = sequelize;
 db.Member = require("./member.model.js")(sequelize, Sequelize);
 db.Tags = require("./tags.model.js")(sequelize, Sequelize);
 
-/*db.Member.hasMany(db.Tags, {
-    foreignKey: 'tag_id',
+db.Member.hasMany(db.Tags, {
+    foreignKey: 'tag_no',
     allowNull: false,
     constraints: true,
     onDelete: 'cascade'
 });
 db.Tags.belongsTo(db.Member, {
-  foreignKey: 'tag_id',
+    foreignKey: 'tag_no',
     allowNull: false,
     constraints: true,
-});*/
+});
 
 db.Tags.sync({
-  force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음
-  alter: process.env.TABLE_ALTER_SYNC === 'true'     // 개발 끝나면 false로 하기
+    force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음
+    alter: process.env.TABLE_ALTER_SYNC === 'true'     // 개발 끝나면 false로 하기
 })
 
 db.Member.sync({
-  force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음
-  alter: process.env.TABLE_ALTER_SYNC === 'true'     // 개발 끝나면 false로 하기
+    force: process.env.TABLE_CREATE_ALWAYS === 'true', // true : (drop) table 데이터 없어질 수 있음
+    alter: process.env.TABLE_ALTER_SYNC === 'true'     // 개발 끝나면 false로 하기
 })
 
 module.exports = db;
