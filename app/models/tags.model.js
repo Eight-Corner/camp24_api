@@ -11,11 +11,12 @@ module.exports = (sequelize, DataTypes) => {
     
     Tags.init({
         tag_no: {
-            field: 'tag_no',
+            field: 't_no',
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
-            allowNull: false
+            allowNull: false,
+            comment: '태그 ID',
         },
         tag: {
             field: 'tag',

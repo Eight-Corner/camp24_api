@@ -25,13 +25,13 @@ db.Member = require("./member.model.js")(sequelize, Sequelize);
 db.Tags = require("./tags.model.js")(sequelize, Sequelize);
 
 db.Member.hasMany(db.Tags, {
-    foreignKey: 'tag_no',
+    foreignKey: 'm_no',
     allowNull: false,
     constraints: true,
     onDelete: 'cascade'
 });
 db.Tags.belongsTo(db.Member, {
-    foreignKey: 'tag_no',
+    foreignKey: 'm_no',
     allowNull: false,
     constraints: true,
 });
