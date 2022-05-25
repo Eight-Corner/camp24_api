@@ -37,6 +37,30 @@ router.get("/member", controller.findAll);
  */
 // 유저 생성
 router.post("/member", controller.create);
+/**
+ * @swagger
+ * paths:
+ *  /api/member:
+ *   post:
+ *     tags: [Member]
+ *     summary: 회원가입 계정
+ *     parameters:
+ *       - name:
+ *         in: Post
+ *         type: string
+ *         description: 회원가입 정보(아이디),
+ *       - name:
+ *          tags: [Member]
+ *          summary: 회원가입 계정
+ *     responses:
+ *       "200":
+ *         description: 회원가입 성공
+ *         content:
+ *           application:json
+ *       "400":
+ *         description: 잘못된 파라메타 전달
+ *
+ */
 
 
 
