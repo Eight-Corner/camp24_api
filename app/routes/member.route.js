@@ -54,12 +54,11 @@ router.post("/member", controller.create);
  *          summary: 회원가입 계정
  *     responses:
  *       "200":
- *
  *         description: 회원가입 성공
  *         content:
  *           application:json
  *       "400":
- *         description: 잘못된 파라메타 전달
+ *         description: 잘못된 파라미터 전달
  *
  */
 
