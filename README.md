@@ -6,12 +6,8 @@
 ```bash
 cd app/
 sequelize db:create --env development
-=======
-
-```bash
-cd app/
-sequelize db:create --env development
 ```
+
 
 ### API-DOCS
 > [ONLY WATCH ME - API-DOCS](http://localhost:8080/docs/)
