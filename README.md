@@ -1,7 +1,8 @@
 # campfire_api
 ⭐️  campfire api server
 
-<<<<<<< HEAD
+
+### How Start?
 ```bash
 cd app/
 sequelize db:create --env development
@@ -12,4 +13,5 @@ cd app/
 sequelize db:create --env development
 ```
 
->>>>>>> 32348d8c57c30a9d12476bf71d93a35f96ff3190
+### API-DOCS
+> [ONLY WATCH ME - API-DOCS](http://localhost:8080/docs/)
