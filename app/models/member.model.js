@@ -21,10 +21,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             comment: '사용자 ID',
         },
-        name: {
-            type: DataTypes.STRING,
+        uid: {
+            field: 'uid',
+            type: DataTypes.STRING(255),
             allowNull: false,
-            comment: '사용자 로그인 닉네임'
+            comment: '사용자 고유 키 값',
         },
         nickname: {
             type: DataTypes.STRING,
