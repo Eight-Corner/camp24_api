@@ -9,7 +9,6 @@ const cors = require('cors');
 const notFound = require('./app/middleware/notFound');
 const errorHandler = require('./app/middleware/errorHandler');
 
-
 // database
 const models = require("./app/models/index.js");
 models.sequelize.sync().then(() => {

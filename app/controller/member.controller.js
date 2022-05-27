@@ -1,7 +1,7 @@
 const db = require("../models");
 const Member = db.Member;
 const Tags = db.Tags;
-
+// express-crypto
 /**********************************
  * Developer : Corner
  * Description : 유저 관련 컨트롤러
@@ -36,39 +36,55 @@ exports.findOne = async (req, res) => {
     });
 };
 
-// 유저 생성
+
+/***********************************
+ * Developer: corner
+ * Description: Salt 암호화,
+ ************************************/
+
+/***********************************
+ * Developer: corner
+ * Description: Salt 암호화 uid,
+ ************************************/
+
+
+/*********************************
+ * Developer: corner
+ * Description: 비밀번호 salt 암호화
+ * *********************************/
+ 
+
+/*********************************
+ * Developer: corner
+ * Description: 계정 생성
+ *********************************/
 exports.create = async (req, res) => {
-    console.log("req--------------------",req.body);
-    if(req.body.constructor === Object && Object.keys(req.body).length === 0) {
+    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
         res.status(400).send({
-           message: "Error: Body(JSON)값이 비어있습니다."
+            message: "Error: Body(JSON)값이 비어있습니다."
         });
     }
-    const {name, nickname, email, password, address} = req.body;
-    await Member.create({
-        name, nickname, email, password, address
-    }).then((result) => {
-        // TODO :: result 값에서 password를 제외
-        console.log("결과 ::: " + result);
-        /*res.status(200).send({
-            status: 200,
-            result: result,
-            message: "success",
-        });*/
-        if (Array.isArray(req.body.tags) && req.body.tags.length) {
-            this.tag_create(req.body.tags, result.m_no).then((res) => {
-                console.log("-------------------tag result-", res.result.Tags);
-                let tag_result = res.result;
-                console.log(tag_result+ "-------------------tag result-");
-                return res.status(200).send({
-                    status: 200,
-                    result: result, tag: tag_result.result,
-                    message: "success"
-                });
-            }).catch((err) => {
-                return res.status(500).send({status: 500, message: err.message});
-            });
+    // TODO:: UID, Password Crypto
+    
+    const {nickname, email, address} = req.body;
+    await Member.create({uid, nickname, email, password, address}).then((result) => {
+        result = {
+            "m_no": result.m_no, // 회원 번호
+            "nickname": result.nickname, // 회원 닉네임
+            "email": result.email, // 회원 이메일
+            "address": result.address, // 회원 주소
+            "createdAt": result.createdAt, // 회원 생성일
         }
+        if (Array.isArray(req.body.tags) && req.body.tags.length > 0) {
+            const tag_body = req.body.tags;
+            
+            tag_body.forEach((value, index, obj) => {
+                this.tag_create(value, result.m_no);
+            });
+            result.tags = tag_body;
+            // 계정 생성과 태그 생성
+        }
+        return res.status(200).send({status: 200, message: "success", result: result});
     }).catch((err) => {
         console.log(err);
         return res.status(500).send({status: 500, message: err.message});
@@ -76,16 +92,12 @@ exports.create = async (req, res) => {
 };
 
 // 태그 생성 (INSERT)
-exports.tag_create = async (tags, res) => {
-    const tag = tags.toString();
-    let return_type = {};
-    return await Tags.create({tag_no: res, tag}).then((result) => {
-        console.log("result::::::::",result);
-        return_type = {type: true, result: result};
-        return return_type;
+exports.tag_create = async (tag, m_no) => {
+    return await Tags.create({m_no, tag}).then((result) => {
+        console.log("result::::::::", result);
+        return true;
     }).catch((err) => {
-        console.log("err::::::::",err.message);
-        return_type = {type: false, result: err.message};
-        return return_type;
+        console.log("err::::::::", err.message);
+        return false;
     });
 };
