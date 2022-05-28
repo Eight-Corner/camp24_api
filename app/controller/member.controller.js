@@ -40,19 +40,20 @@ exports.findOne = async (req, res) => {
 /***********************************
  * Developer: corner
  * Description: Salt 암호화,
+ *              salt 값을 구할 때와 해시 값을 구할 때, 작업이 끝날때까지 기다려 주어야 하므로 [동기 방식]으로 사용합니다.
  ************************************/
+// import crypto from 'crypto';
+const crypto = require('crypto');
 
+crypto.randomBytes(64, (err, salt) => {
+    crypto.pbkdf2('password', salt.toString('base64'), 100000, 64, 'sha512', (err, key) => {
+        console.log(key.toString('base64'));
+    });
+});
 /***********************************
  * Developer: corner
  * Description: Salt 암호화 uid,
  ************************************/
-
-
-/*********************************
- * Developer: corner
- * Description: 비밀번호 salt 암호화
- * *********************************/
- 
 
 /*********************************
  * Developer: corner
@@ -65,6 +66,15 @@ exports.create = async (req, res) => {
         });
     }
     // TODO:: UID, Password Crypto
+    let password = req.body.password;
+    let uid = req.body.email;
+    
+    crypto.createHash('sha512').update(password).digest('base64');
+    password = crypto.createHash('sha512').update(password).digest('hex');
+    
+    crypto.createHash('sha512').update(uid).digest('base64');
+    uid = crypto.createHash('sha512').update(uid).digest('hex');
+    console.log(password);
     
     const {nickname, email, address} = req.body;
     await Member.create({uid, nickname, email, password, address}).then((result) => {
