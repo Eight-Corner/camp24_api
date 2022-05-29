@@ -2,6 +2,8 @@ const db = require("../models");
 const Member = db.Member;
 const Tags = db.Tags;
 // express-crypto
+const crypto = require('crypto');
+
 /**********************************
  * Developer : Corner
  * Description : 유저 관련 컨트롤러
@@ -42,9 +44,6 @@ exports.findOne = async (req, res) => {
  * Description: Salt 암호화,
  *              salt 값을 구할 때와 해시 값을 구할 때, 작업이 끝날때까지 기다려 주어야 하므로 [동기 방식]으로 사용합니다.
  ************************************/
-// import crypto from 'crypto';
-const crypto = require('crypto');
-
 crypto.randomBytes(64, (err, salt) => {
     crypto.pbkdf2('password', salt.toString('base64'), 100000, 64, 'sha512', (err, key) => {
         console.log(key.toString('base64'));

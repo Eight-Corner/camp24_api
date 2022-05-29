@@ -1,3 +1,5 @@
+// Sequelize 사용하지 않을 때 DB 커넥션
+
 const mysql = require("mysql2");
 const dbConfig = require("../config/db.config.js");
 
