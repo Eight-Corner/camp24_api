@@ -13,31 +13,81 @@ exports.findAll = async (req, res) => {
     await Member.findAll({
         limit: 10,
     }).then((result) => {
-        res.status(200).send({
-            status: 200,
-            result,
-            message: "success"
+        let response = [];
+        result.forEach(value => {
+            response.push({
+                m_no: value.m_no,
+                nickname: value.nickname,
+                email: value.email,
+                createdAt: value.createdAt,
+            });
         });
+        res.status(200).send({status: 200, result: response, message: "success"});
     }).catch((err) => {
         res.status(500).json({status: 500, message: err.message});
     });
 };
 
-// 유저 단일 조회
+
+/**********************
+ * Developer : Corner
+ * Description : 유저 단일 조회
+ **********************/
 exports.findOne = async (req, res) => {
     await Member.findOne({
-        id: req.query.id,
+        m_no: req.params.m_no,
     }).then((result) => {
-        res.status(200).send({
-            status: 200,
-            result,
-            message: "success"
-        });
+        const response = {
+            m_no: result.m_no,
+            nickname: result.nickname,
+            email: result.email,
+            createdAt: result.createdAt,
+        };
+        res.status(200).send({status: 200, result: response, message: "success"});
     }).catch((err) => {
         res.status(500).json({status: 500, message: err.message});
     });
 };
 
+/**********************
+ * Developer : Corner
+ * Description : 계정 중복체크, nickname
+ **********************/
+exports.dupCheckId = async (req, res) => {
+    const nickname = req.body.nickname;
+    
+    await Member.findOne({
+        nickname
+    }).then((result) => {
+        if (result) {
+            res.status(200).send({status: 200, result: false, message: "중복::존재하는 계정"});
+        } else {
+            res.status(200).send({status: 200, result: true, message: "사용가능"});
+        }
+    }).catch((err) => {
+        res.status(500).json({status: 500, message: err.message});
+    });
+}
+
+/**********************
+ * Developer : Corner
+ * Description : 계정 중복체크, email
+ **********************/
+exports.dupCheckEmail = async (req, res) => {
+    const email = req.body.email;
+    
+    await Member.findOne({
+        email
+    }).then((result) => {
+        if (result) {
+            res.status(200).send({status: 200, result: false, message: "중복::존재하는 계정"});
+        } else {
+            res.status(200).send({status: 200, result: true, message: "사용가능"});
+        }
+    }).catch((err) => {
+        res.status(500).json({status: 500, message: err.message});
+    });
+}
 
 /***********************************
  * Developer: corner
@@ -49,11 +99,6 @@ crypto.randomBytes(64, (err, salt) => {
         console.log(key.toString('base64'));
     });
 });
-/***********************************
- * Developer: corner
- * Description: Salt 암호화 uid,
- ************************************/
-
 /*********************************
  * Developer: corner
  * Description: 계정 생성
@@ -73,7 +118,6 @@ exports.create = async (req, res) => {
     
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
-    console.log(password);
     
     const {nickname, email, address} = req.body;
     await Member.create({uid, nickname, email, password, address}).then((result) => {
@@ -103,10 +147,8 @@ exports.create = async (req, res) => {
 // 태그 생성 (INSERT)
 exports.tag_create = async (tag, m_no) => {
     return await Tags.create({m_no, tag}).then((result) => {
-        console.log("result::::::::", result);
         return true;
     }).catch((err) => {
-        console.log("err::::::::", err.message);
         return false;
     });
 };

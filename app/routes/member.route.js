@@ -11,36 +11,46 @@ router.get("/member", controller.findAll);
 /**
  * @swagger
  * paths:
- *  /api/member:
+ *  /member:
  *    get:
  *      summary: "유저 데이터 전체조회"
  *      description: "모든 유저 데이터 조회"
  *      tags: [Member]
  *      responses:
  *        "200":
- *          description: 전체 유저 정보
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                    ok:
- *                      type: boolean
- *                    users:
- *                      type: object
- *                      example:
- *                          [
- *                            { "id": 1, "name": "유저1" },
- *                            { "id": 2, "name": "유저2" },
- *                            { "id": 3, "name": "유저3" },
- *                          ]
+ *          description: 조회 성공
  */
+// 유저 단일 조회
+router.get("/member/:id", controller.findOne);
+/**
+ * @swagger
+ * paths:
+ *  /member/:id:
+ *    get:
+ *      summary: "유저 데이터 전체조회"
+ *      description: "단일 유저 데이터 조회"
+ *      tags: [Member]
+ *      parameters:
+ *        - in: params
+ *          name: m_no
+ *          description: 유저 번호
+ *          required: true
+ *      responses:
+ *       200:
+ *        description: '[ "status": 200, "result": { "m_no": 1, "nickname": "기훈쨩", "email": "corner@gmail.com", "createdAt": "2022-05-28T16:49:46.000Z" }, "message": "success" ]'
+ *        schema:
+ */
+// 중복 체크
+router.post("/member/name", controller.dupCheckId)
+router.post("/member/email", controller.dupCheckEmail)
+
+
 // 유저 생성
 router.post("/member", controller.create);
 /**
  * @swagger
  * paths:
- *  /api/member:
+ *  /member:
  *   post:
  *     tags: [Member]
  *     summary: 회원가입 계정
