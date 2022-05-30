@@ -20,9 +20,33 @@ models.sequelize.sync().then(() => {
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 // cors
-app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-}));
+// app.use(cors({
+//     origin: process.env.CORS_ORIGIN,
+// }));
+let isDev = true; // true : dev, false; prod
+
+let config = {
+    dev: {
+        domain: "http://localhost:3000",
+        serverDomain: "https://front-campfire-web.vercel.app",
+    },
+    prod: {
+        domain: "http://localhost:3000",
+        serverDomain: "https://front-campfire-web.vercel.app/",
+    },
+}
+
+function getConfig(key = 'domain') {
+    return isDev ? config.dev[key] : config.prod[key];
+}
+// const devOrigin = 'http://localhost:3000';
+// const prodOrigin = 'https://front-campfire-web.vercel.app';
+const corsOptions = {
+    origin: getConfig('domain'),
+    credentials: true
+}
+
+app.use(cors(corsOptions));
 // dotenv, colors
 dotenv.config({ path: 'src/config/config.env' });
 
