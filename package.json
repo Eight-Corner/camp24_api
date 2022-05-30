@@ -6,7 +6,8 @@
   "scripts": {
     "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git pull && push": "git pull origin Dev1 && git add . && git commit -am 'updated' && git push"
   },
   "author": "corner",
   "license": "ISC",
