@@ -79,10 +79,14 @@ exports.dupCheckEmail = async (req, res) => {
     await Member.findOne({
         email
     }).then((result) => {
+        let info = { type: result, message: '' }
+        let data = { result}
         if (result) {
-            res.status(200).send({status: 200, result: false, message: "중복::존재하는 계정"});
+            info.message = "존재하는 계정"
+            res.status(200).send({status: 200, data, info});
         } else {
-            res.status(200).send({status: 200, result: true, message: "사용가능"});
+            info.message = "사용가능"
+            res.status(200).send({status: 200, data, info});
         }
     }).catch((err) => {
         res.status(500).json({status: 500, message: err.message});
@@ -120,7 +124,12 @@ exports.create = async (req, res) => {
     uid = crypto.createHash('sha512').update(uid).digest('hex');
     
     const {nickname, email, address} = req.body;
+    
     await Member.create({uid, nickname, email, password, address}).then((result) => {
+        let info = {
+            'type': true,
+            message: "success",
+        }
         result = {
             "m_no": result.m_no, // 회원 번호
             "nickname": result.nickname, // 회원 닉네임
@@ -128,16 +137,18 @@ exports.create = async (req, res) => {
             "address": result.address, // 회원 주소
             "createdAt": result.createdAt, // 회원 생성일
         }
+        
         if (Array.isArray(req.body.tags) && req.body.tags.length > 0) {
             const tag_body = req.body.tags;
             
             tag_body.forEach((value, index, obj) => {
-                this.tag_create(value, result.m_no);
+                this.createInTag(value, result.m_no);
             });
             result.tags = tag_body;
             // 계정 생성과 태그 생성
         }
-        return res.status(200).send({status: 200, message: "success", result: result});
+        let data = {status:200, data: {result}, info}
+        return res.status(200).send(data);
     }).catch((err) => {
         console.log(err);
         return res.status(500).send({status: 500, message: err.message});
@@ -145,8 +156,24 @@ exports.create = async (req, res) => {
 };
 
 // 태그 생성 (INSERT)
-exports.tag_create = async (tag, m_no) => {
+exports.createInTag = async (tag, m_no) => {
     return await Tags.create({m_no, tag}).then((result) => {
+        return true;
+    }).catch((err) => {
+        return false;
+    });
+};
+// 태그 생성 (INSERT)
+exports.createTag = async (req, res) => {
+    return await Tags.create({req, res}).then((result) => {
+        return true;
+    }).catch((err) => {
+        return false;
+    });
+};
+// 태그 삭제
+exports.deleteTag = async (req, res) => {
+    return await Tags.create({req, res}).then((result) => {
         return true;
     }).catch((err) => {
         return false;

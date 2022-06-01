@@ -24,16 +24,19 @@ module.exports = (sequelize, DataTypes) => {
         uid: {
             field: 'uid',
             type: DataTypes.STRING(255),
+            unique: true,
             allowNull: false,
             comment: '사용자 고유 키 값',
         },
         nickname: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false,
             comment: '사용자 닉네임'
         },
         email: {
             type: DataTypes.STRING,
+            unique: true,
             allowNull: false,
             comment: '사용자 이메일'
         },
