@@ -27,10 +27,10 @@ let isDev = true; // true : dev, false; prod
 
 let config = {
     dev: {
-        domain: "http://ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
+        domain: "ec2-54-180-83-21.ap-northeast-2.compute.amazonaws.com",
     },
     prod: {
-        domain: "http://ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
+        domain: "ec2-13-209-21-178.ap-northeast-2.compute.amazonaws.com",
     },
 }
 

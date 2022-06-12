@@ -1,6 +1,6 @@
 {
   "dev": {
-    "username": "root",
+    "username": "admin",
     "password": "Thiskim12!@",
     "database": "campfire",
     "host": "127.0.0.1",
@@ -14,7 +14,7 @@
     "dialect": "mysql"
   },
   "prod": {
-    "username": "root",
+    "username": "admin",
     "password": "Thiskim12!@",
     "database": "campfire",
     "host": "127.0.0.1",
