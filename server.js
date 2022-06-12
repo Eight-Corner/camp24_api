@@ -28,11 +28,9 @@ let isDev = true; // true : dev, false; prod
 let config = {
     dev: {
         domain: "http://ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
-        serverDomain: "https://front-campfire-web.vercel.app",
     },
     prod: {
         domain: "http://ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
-        serverDomain: "https://front-campfire-web.vercel.app/",
     },
 }
 
@@ -63,7 +61,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 if (isDev) {
-    process.env.PORT = "80";
+    process.env.PORT = "8080";
 } else {
     process.env.PORT = "80";
 }

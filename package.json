@@ -4,6 +4,8 @@
   "description": "template",
   "main": "index.js",
   "scripts": {
+    "createDB dev": "sequelize db:create --env dev",
+    "createDB prod": "sequelize db:create --env prod",
     "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -27,3 +29,4 @@
     "swagger-ui-express": "^4.4.0"
   }
 }
+

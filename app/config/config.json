@@ -1,22 +1,22 @@
 {
-  "development": {
+  "dev": {
     "username": "root",
     "password": "Thiskim12!@",
     "database": "campfire",
-    "host": "ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "Thiskim12!@",
-    "database": "campfire_dev",
-    "host": "ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
+    "database": "campfire_test",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
-  "production": {
+  "prod": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
+    "password": "Thiskim12!@",
+    "database": "campfire",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
