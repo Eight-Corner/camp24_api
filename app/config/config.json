@@ -1,14 +1,14 @@
 {
   "development": {
     "username": "root",
-    "password": "thiskim12!@",
+    "password": "Thiskim12!@",
     "database": "campfire",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "thiskim12!@",
+    "password": "Thiskim12!@",
     "database": "campfire_dev",
     "host": "127.0.0.1",
     "dialect": "mysql"
