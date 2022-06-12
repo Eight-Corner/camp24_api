@@ -27,11 +27,11 @@ let isDev = true; // true : dev, false; prod
 
 let config = {
     dev: {
-        domain: "http://localhost:3000",
+        domain: "http://ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
         serverDomain: "https://front-campfire-web.vercel.app",
     },
     prod: {
-        domain: "http://localhost:3000",
+        domain: "http://ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com",
         serverDomain: "https://front-campfire-web.vercel.app/",
     },
 }
@@ -62,11 +62,16 @@ app.use('/', router)
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8080;
+if (isDev) {
+    process.env.PORT = "80";
+} else {
+    process.env.PORT = "80";
+}
 
 // 포트넘버 설정
+const PORT = isDev ? process.env.PORT : process.env.PORT;
 app.listen(PORT, () => {
-    console.log(`Server up and running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold)
+    console.log(`::::::Server up and running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold)
 });
 // const PORT = process.env.PORT || 8080;
 // app.listen(PORT, ()=>{

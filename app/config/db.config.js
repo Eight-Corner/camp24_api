@@ -1,4 +1,29 @@
+// todo:: true : dev, false: prod
+let isDev = true;
+
+// HOST: 'localhost',
+let config = {
+    dev: {
+        HOST: 'ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com',
+        USER: 'admin',
+        PASSWORD: 'Thiskim12!@',
+    },
+    prod: {
+        USER: 'admin',
+        HOST: 'ec2-13-209-19-170.ap-northeast-2.compute.amazonaws.com',
+        PASSWORD: 'Thiskim12!@'
+    },
+}
+
+function getConfig(key) {
+    return isDev ? config.dev[key] : config.prod[key];
+}
+
+//    "host": "ec2-107-23-80-232.compute-1.amazonaws.com",
 module.exports = {
+    isDev,
+    config,
+    getConfig,
     HOST: "localhost",
     PORT: "3306",
     USER: "root",
