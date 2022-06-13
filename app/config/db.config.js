@@ -4,13 +4,13 @@ let isDev = true;
 // HOST: 'localhost',
 let config = {
     dev: {
-        HOST: 'ec2-54-180-83-21.ap-northeast-2.compute.amazonaws.com',
-        USER: 'root',
+        HOST: 'ec2-52-79-82-151.ap-northeast-2.compute.amazonaws.com',
+        USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },
     prod: {
-        USER: 'root',
-        HOST: 'ec2-13-209-21-178.ap-northeast-2.compute.amazonaws.com',
+        HOST: 'ec2-52-79-82-151.ap-northeast-2.compute.amazonaws.com',
+        USER: 'admin',
         PASSWORD: 'Thiskim12!@'
     },
 }
@@ -26,7 +26,7 @@ module.exports = {
     getConfig,
     HOST: "localhost",
     PORT: "3306",
-    USER: "root",
+    USER: "admin",
     PASSWORD: "Thiskim12!@",
     DB: "campfire",
     dialect: "mysql",

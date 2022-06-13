@@ -7,7 +7,7 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
+    "username": "admin",
     "password": "Thiskim12!@",
     "database": "campfire_test",
     "host": "127.0.0.1",
