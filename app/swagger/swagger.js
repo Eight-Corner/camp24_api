@@ -1,13 +1,18 @@
 const swaggerUi = require("swagger-ui-express")
 const swaggerJSDoc = require('swagger-jsdoc');
+const {getConfig, isDev} = require("../config/db.config");
 
+let key = 'HOST'
+console.log(`isDev: ${isDev}`.yellow, `config: ${getConfig(key)}`.yellow)
 var swaggerDefinition = {
     info : { // 정보 작성
         version: "1.0.0",
         title: "Campfire API DOCS",
-        description: "프로젝트 설명 Node.js Express RestFul API 클라이언트 UI",
+        description:
+            "Campfire Web API 문서입니다. " +
+            "<br>",
     },
-    host : "localhost:8080", // base-url
+    host : getConfig(key), // base-url
     basePath : "/api" // base path
 };
 

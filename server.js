@@ -61,7 +61,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 if (isDev) {
-    process.env.PORT = "8080";
+    process.env.PORT = "80";
 } else {
     process.env.PORT = "80";
 }
