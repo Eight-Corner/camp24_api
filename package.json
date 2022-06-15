@@ -4,22 +4,22 @@
   "description": "template",
   "main": "index.js",
   "scripts": {
+    "createDB dev": "sequelize db:create --env dev",
+    "createDB prod": "sequelize db:create --env prod",
     "start": "NODE_ENV=production node server.js",
     "dev": "NODE_ENV=development nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "git pull && push": "git pull origin Dev1 && git add . && git commit -am 'updated' && git push"
   },
   "author": "corner",
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
     "cors": "^2.8.5",
-    "crypto-js": "^4.1.1",
-    "crypto-random-string": "^5.0.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
-    "express-crypto": "1.0.5",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.19.2",
+    "sequelize": "^6.20.1",
     "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
@@ -29,3 +29,4 @@
     "swagger-ui-express": "^4.4.0"
   }
 }
+

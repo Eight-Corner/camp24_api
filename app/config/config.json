@@ -1,22 +1,22 @@
 {
-  "development": {
-    "username": "root",
-    "password": "thiskim12!@",
+  "dev": {
+    "username": "admin",
+    "password": "Thiskim12!@",
     "database": "campfire",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "thiskim12!@",
-    "database": "campfire_dev",
+    "username": "admin",
+    "password": "Thiskim12!@",
+    "database": "campfire_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+  "prod": {
+    "username": "admin",
+    "password": "Thiskim12!@",
+    "database": "campfire",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
