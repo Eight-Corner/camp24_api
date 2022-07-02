@@ -4,12 +4,12 @@ let isDev = true;
 // HOST: 'localhost',
 let config = {
     dev: {
-        HOST: 'ec2-52-79-82-151.ap-northeast-2.compute.amazonaws.com',
+        HOST: 'ec2-13-209-96-46.ap-northeast-2.compute.amazonaws.com',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },
     prod: {
-        HOST: 'ec2-52-79-82-151.ap-northeast-2.compute.amazonaws.com',
+        HOST: 'ec2-13-209-96-46.ap-northeast-2.compute.amazonaws.com',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@'
     },
