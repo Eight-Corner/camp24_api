@@ -7,7 +7,7 @@ console.log(`isDev: ${isDev}`.yellow, `config: ${getConfig(key)}`.yellow)
 var swaggerDefinition = {
     info : { // 정보 작성
         version: "1.0.0",
-        title: "Campfire API DOCS",
+        title: "캠핑친구24 API DOCS",
         description:
             "Campfire Web API 문서입니다. " +
             "<br>",
