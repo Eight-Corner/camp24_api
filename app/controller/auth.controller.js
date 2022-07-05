@@ -94,8 +94,13 @@ exports.login = async (req, res) => {
 }
 
 exports.check = (req, res) => {
-	res.json({
+	const info = req.decoded;
+	info.message = '로그인 성공';
+	info.type = true;
+
+	res.status(200).json({
 		success: true,
-		info: req.decoded
+		status: 200,
+		info: info,
 	})
 };
