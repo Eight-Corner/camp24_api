@@ -33,7 +33,7 @@ passportConfig();
 db = require("./app/config/db.config.js");
 
 const corsOptions = {
-    origin: db.getConfig('host'),
+    origin: '*',
     credentials: true
 }
 
