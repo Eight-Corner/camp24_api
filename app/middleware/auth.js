@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 exports.verifyToken = async (req, res, next) => {
 	const headers = req.headers;
 	if (!headers.hasOwnProperty('authorization')) {
-		return res.status(403).json({
+		return res.status(200).json({
 			status: 403,
 			success: false,
 			message: '로그인이 필요합니다.'
@@ -12,7 +12,7 @@ exports.verifyToken = async (req, res, next) => {
 	const token = req.headers.authorization.split('Bearer ')[1] || req.headers['x-access-token']
 	console.log(token)
 	if (!token || token === 'null') {
-		return res.status(403).json({
+		return res.status(200).json({
 			status: 403,
 			success: false,
 			message: '로그인이 필요합니다.'

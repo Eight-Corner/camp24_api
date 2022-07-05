@@ -16,7 +16,8 @@ exports.decipher = (password, key) => {
 
 exports.login = async (req, res) => {
 	if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-		res.status(400).json({
+		res.status(200).json({
+			status: 400,
 			message: "Error: Body(JSON)값이 비어있습니다."
 		});
 	}
@@ -36,7 +37,7 @@ exports.login = async (req, res) => {
 		if (!respond) {
 
 			info.message = '존재하지 않는 유저입니다.'
-			return res.status(403).json({
+			return res.status(200).json({
 				status: 403,
 				info: info,
 			});
@@ -73,7 +74,7 @@ exports.login = async (req, res) => {
 			} else {
 
 				info.message = '비밀번호가 일치하지 않습니다.'
-				return res.status(403).json({
+				return res.status(200).json({
 					status: 403,
 					info: info,
 				});
@@ -84,7 +85,7 @@ exports.login = async (req, res) => {
 
 	}).catch(err => {
 		info.message = '로그인 실패 <br/>' + err;
-		return res.status(500).json({
+		return res.status(200).json({
 			status: 500,
 			info: info,
 		});
