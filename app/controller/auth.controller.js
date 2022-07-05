@@ -55,9 +55,10 @@ exports.login = async (req, res) => {
 						}
 						resolve(token);
 						info.message = '로그인 성공';
-
+						res.setHeader('Content-Type','application/json; charset=utf-8');
+						res.setHeader('Authorization', 'Bearer ' + token);
 						return res.status(200).header({
-							'bearer': token,
+							'Authorization': 'Bearer ' + token,
 						}).json({
 							status: 200,
 							info: info,

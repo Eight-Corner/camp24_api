@@ -9,9 +9,8 @@ exports.verifyToken = async (req, res, next) => {
 			message: '로그인이 필요합니다.'
 		});
 	}
-
-	console.log(req.headers.authorization.split('Bearer '))
 	const token = req.headers.authorization.split('Bearer ')[1] || req.headers['x-access-token']
+	console.log(token)
 	if (!token || token === 'null') {
 		return res.status(403).json({
 			status: 403,
