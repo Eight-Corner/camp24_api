@@ -10,7 +10,6 @@ exports.verifyToken = async (req, res, next) => {
 		});
 	}
 
-	console.log(req.headers.authorization.split('Bearer '))
 	const token = req.headers.authorization.split('Bearer ')[1] || req.headers['x-access-token']
 	if (!token || token === 'null') {
 		return res.status(403).json({
