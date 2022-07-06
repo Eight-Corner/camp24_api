@@ -1,5 +1,5 @@
 # campfire_api
-⭐️  campfire api server
+⭐️  캠핑24 api server
 
 
 ### How Start?

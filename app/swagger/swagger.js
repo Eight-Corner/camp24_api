@@ -9,7 +9,7 @@ var swaggerDefinition = {
         version: "1.0.0",
         title: "캠핑친구24 API DOCS",
         description:
-            "Campfire Web API 문서입니다. " +
+            "캠핑24 Web API 문서입니다. " +
             "<br>",
     },
     host : getConfig(key), // base-url
