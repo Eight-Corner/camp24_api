@@ -1,9 +1,9 @@
 ---
 name: "[Feature] 기능단위 개발 템플릿 "
 about: '기능 단위 개발 이슈 작성 템플릿 '
-title: "[Front]_Feature TITLE_[Develop]"
-labels: Develop, 진행대기
-assignees: tjwns3481, Eight-Corner
+title: "[API]_Feature TITLE_[Develop]"
+labels: Develop, 진행 대기
+assignees: Eight-Corner
 
 ---
 
