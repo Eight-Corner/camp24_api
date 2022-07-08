@@ -2,21 +2,21 @@
   "dev": {
     "username": "admin",
     "password": "Thiskim12!@",
-    "database": "campfire",
+    "database": "camp24",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
     "username": "admin",
     "password": "Thiskim12!@",
-    "database": "campfire_test",
+    "database": "camp24_test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "prod": {
     "username": "admin",
     "password": "Thiskim12!@",
-    "database": "campfire",
+    "database": "camp24",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
