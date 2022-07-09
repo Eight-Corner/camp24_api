@@ -123,8 +123,13 @@ exports.create = async (req, res) => {
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
 
-    const {nickname, email, address, birthday} = req.body;
 
+	console.log("------------------------------------------")
+	console.log(uid)
+	console.log(password)
+	console.log("------------------------------------------")
+    const {nickname, email, address, birthday} = req.body;
+	console.log(nickname, email, address, birthday)
     await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
         let info = {
             'type': true,
