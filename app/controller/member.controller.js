@@ -74,25 +74,34 @@ exports.dupCheckId = async (req, res) => {
  * Description : 계정 중복체크, email
  **********************/
 exports.dupCheckEmail = async (req, res) => {
-    const email = req.body.email;
-
-    await Member.findOne({
-        email
-    }).then((result) => {
-        let info = { type: result, message: '' }
-        let data = { result}
-        if (result) {
-            info.message = "존재하는 계정"
-            res.status(200).send({status: 200, data, info});
-        } else {
-            info.message = "사용가능"
-            res.status(200).send({status: 200, data, info});
-        }
-    }).catch((err) => {
-        res.status(500).json({status: 500, message: err.message});
-    });
+	let info = {type: false, message: ''};
+	if (req.body.hasOwnProperty('email') && req.body.email === '') {
+		info.message = "이메일을 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+	const email = req.body.email;
+	return await Member.findOne({
+		where: {
+			email: email
+		}
+	}).then((result) => {
+		info = {type: false, message: ''}
+		if (result) {
+			info.type = false
+			info.message = "존재하는 계정"
+			return res.status(200).json({status: 200, info});
+		} else {
+			info.type = true
+			info.message = "사용가능"
+			return res.status(200).json({status: 200, info});
+		}
+	}).catch((err) => {
+		return res.status(500).json({status: 500, message: err.message});
+	});
 }
-
 /***********************************
  * Developer: corner
  * Description: Salt 암호화,
