@@ -60,9 +60,9 @@ module.exports = (sequelize, DataTypes) => {
         modelName: 'Member',
     });
 
-    Member.associate = function (models) {
+    /*Member.associate = function (models) {
         Member.hasMany(models.Tags);
-    };
+    };*/
     return Member;
 };
 

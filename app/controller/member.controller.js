@@ -1,6 +1,5 @@
 const db = require("../models");
 const Member = db.Member;
-const Tags = db.Tags;
 // express-crypto
 const crypto = require('crypto');
 
@@ -148,45 +147,10 @@ exports.create = async (req, res) => {
 			"birthday": result.birthday, // 회원 생년월일
             "createdAt": result.createdAt, // 회원 생성일
         }
-
-        if (Array.isArray(req.body.tags) && req.body.tags.length > 0) {
-            const tag_body = req.body.tags;
-
-            tag_body.forEach((value, index, obj) => {
-                this.createInTag(value, result.m_no);
-            });
-            result.tags = tag_body;
-            // 계정 생성과 태그 생성
-        }
         let data = {status:200, data: {result}, info}
         return res.status(200).send(data);
     }).catch((err) => {
         console.log(err);
         return res.status(500).send({status: 500, message: err.message});
-    });
-};
-
-// 태그 생성 (INSERT)
-exports.createInTag = async (tag, m_no) => {
-    return await Tags.create({m_no, tag}).then((result) => {
-        return true;
-    }).catch((err) => {
-        return false;
-    });
-};
-// 태그 생성 (INSERT)
-exports.createTag = async (req, res) => {
-    return await Tags.create({req, res}).then((result) => {
-        return true;
-    }).catch((err) => {
-        return false;
-    });
-};
-// 태그 삭제
-exports.deleteTag = async (req, res) => {
-    return await Tags.create({req, res}).then((result) => {
-        return true;
-    }).catch((err) => {
-        return false;
     });
 };
