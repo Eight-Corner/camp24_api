@@ -3,6 +3,22 @@ const Member = db.Member;
 // express-crypto
 const crypto = require('crypto');
 
+
+/**********************
+ * Developer : Corner
+ * Description : 유효성 체크, JSON 형식
+ **********************/
+const emptyJson = (obj) => {
+	return obj.constructor === Object && Object.key(obj).length === 0;
+}
+/**********************
+ * Developer : Corner
+ * Description : 유효성 체크, Properties Check
+ **********************/
+const emptyProperty = (obj, key) => {
+	return obj.hasOwnProperty(key) && obj[key] !== '';
+}
+
 /**********************************
  * Developer : Corner
  * Description : 유저 관련 컨트롤러
@@ -51,48 +67,85 @@ exports.findOne = async (req, res) => {
 
 /**********************
  * Developer : Corner
- * Description : 계정 중복체크, nickname
+ * Description : 계정 닉네임 중복체크, nickname
  **********************/
-exports.dupCheckId = async (req, res) => {
-    const nickname = req.body.nickname;
+exports.dupCheckNick = async (req, res) => {
+	let info = {type: false, message: ''};
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
 
-    await Member.findOne({
-        nickname
-    }).then((result) => {
-        if (result) {
-            res.status(200).send({status: 200, result: false, message: "중복::존재하는 계정"});
-        } else {
-            res.status(200).send({status: 200, result: true, message: "사용가능"});
-        }
-    }).catch((err) => {
-        res.status(500).json({status: 500, message: err.message});
-    });
+	if (emptyProperty(req.body, 'nickname') === true) {
+		info.message = "닉네임을 입력해주세요.";
+		return res.status(200).json({
+			status: 401,
+			info
+		});
+	}
+	const nickname = req.body.nickname;
+
+	await Member.findOne({
+		nickname
+	}).then((result) => {
+		if (result.nickname === nickname) {
+			info.type = false
+			info.message = "존재하는 계정"
+			return res.status(200).json({status: 201, info});
+		}
+		info.type = true
+		info.message = "사용가능"
+		return res.status(200).json({status: 200, info});
+	}).catch((err) => {
+		res.status(500).json({status: 500, message: err.message});
+	});
 }
 
 /**********************
  * Developer : Corner
- * Description : 계정 중복체크, email
+ * Description : 계정 이메일 중복체크, email
  **********************/
 exports.dupCheckEmail = async (req, res) => {
-    const email = req.body.email;
+	let info = {type: false, message: ''};
 
-    await Member.findOne({
-        email
-    }).then((result) => {
-        let info = { type: result, message: '' }
-        let data = { result}
-        if (result) {
-            info.message = "존재하는 계정"
-            res.status(200).send({status: 200, data, info});
-        } else {
-            info.message = "사용가능"
-            res.status(200).send({status: 200, data, info});
-        }
-    }).catch((err) => {
-        res.status(500).json({status: 500, message: err.message});
-    });
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	if (emptyProperty(req.body, 'email') === true) {
+		info.message = "이메일을 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	const email = req.body.email;
+
+	return await Member.findOne({
+		where: {
+			email: email
+		}
+	}).then((result) => {
+		if (result.email === email) {
+			info.type = false
+			info.message = "존재하는 계정"
+			return res.status(200).json({status: 201, info});
+		}
+		info.type = true
+		info.message = "사용가능"
+		return res.status(200).json({status: 200, info});
+	}).catch((err) => {
+		return res.status(500).json({status: 500, message: err.message});
+	});
 }
-
 /***********************************
  * Developer: corner
  * Description: Salt 암호화,
