@@ -29,7 +29,7 @@ module.exports = {
     PORT: "3306",
     USER: getConfig('USER'),
     PASSWORD: "Thiskim12!@",
-    DB: "campfire",
+    DB: "camp24",
     dialect: "mysql",
     dialectOptions: {
         charset: "utf8mb4",

@@ -35,10 +35,11 @@ exports.findAll = async (req, res) => {
  **********************/
 exports.findOne = async (req, res) => {
     await Member.findOne({
-        m_no: req.params.m_no,
+        uid: req.params.uid,
     }).then((result) => {
         const response = {
-            m_no: result.m_no,
+            uid: result.uid,
+			m_no: result.m_no,
             nickname: result.nickname,
             email: result.email,
             createdAt: result.createdAt,
@@ -55,7 +56,7 @@ exports.findOne = async (req, res) => {
  **********************/
 exports.dupCheckId = async (req, res) => {
     const nickname = req.body.nickname;
-    
+
     await Member.findOne({
         nickname
     }).then((result) => {
@@ -75,7 +76,7 @@ exports.dupCheckId = async (req, res) => {
  **********************/
 exports.dupCheckEmail = async (req, res) => {
     const email = req.body.email;
-    
+
     await Member.findOne({
         email
     }).then((result) => {
@@ -116,16 +117,25 @@ exports.create = async (req, res) => {
     // TODO:: UID, Password Crypto
     let password = req.body.password;
     let uid = req.body.email;
-    
+
     crypto.createHash('sha512').update(password).digest('base64');
     password = crypto.createHash('sha512').update(password).digest('hex');
-    
+
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
-    
-    const {nickname, email, address} = req.body;
-    
-    await Member.create({uid, nickname, email, password, address}).then((result) => {
+
+    const {nickname, email, address, birthday} = req.body;
+
+	await Member.findOne({where: {uid: uid, nickname: nickname}}).then((result) => {
+		if (result) {
+			return res.status(200).json({
+				status: 403,
+				info: {message: "중복된 계정입니다.", type: false},
+			});
+		}
+	});
+
+    await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
         let info = {
             'type': true,
             message: "success",
@@ -135,12 +145,13 @@ exports.create = async (req, res) => {
             "nickname": result.nickname, // 회원 닉네임
             "email": result.email, // 회원 이메일
             "address": result.address, // 회원 주소
+			"birthday": result.birthday, // 회원 생년월일
             "createdAt": result.createdAt, // 회원 생성일
         }
-        
+
         if (Array.isArray(req.body.tags) && req.body.tags.length > 0) {
             const tag_body = req.body.tags;
-            
+
             tag_body.forEach((value, index, obj) => {
                 this.createInTag(value, result.m_no);
             });

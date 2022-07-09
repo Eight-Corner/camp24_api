@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             // models.Member.hasMany(models.Tags, {foreignKey: "fk_member_id", onDelete: 'cascade'})
         }
     }
-    
+
     Member.init({
         m_no: {
             field: 'm_no',
@@ -48,13 +48,18 @@ module.exports = (sequelize, DataTypes) => {
         address: {
             type: DataTypes.STRING,
             allowNull: false,
-            comment: '사용자 지역'
+            comment: '사용자 거주 지역'
         },
+		birthday: {
+			type: DataTypes.DATE,
+			allowNull: false,
+			comment: '사용자 생일'
+		}
     }, {
         sequelize,
         modelName: 'Member',
     });
-    
+
     Member.associate = function (models) {
         Member.hasMany(models.Tags);
     };
@@ -114,10 +119,10 @@ const Member = function(member) {
 }
 
 Member.getAll = async res => {
-     
+
         const members = await Member.findAll();
         const result = [];
-        
+
         for (const member of members) {
             result.push({
                 id: member._id,
