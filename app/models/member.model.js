@@ -15,11 +15,11 @@ module.exports = (sequelize, DataTypes) => {
     Member.init({
         m_no: {
             field: 'm_no',
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-            allowNull: false,
-            comment: '사용자 ID',
+			type: DataTypes.INTEGER,
+			primaryKey: true,
+			autoIncrement: true,
+			allowNull: false,
+			comment: '사용자 ID',
         },
         uid: {
             field: 'uid',
@@ -32,6 +32,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             unique: true,
             allowNull: false,
+			charset: 'utf8mb4',
+			collate: 'utf8mb4_general_ci',
             comment: '사용자 닉네임'
         },
         email: {
@@ -48,6 +50,8 @@ module.exports = (sequelize, DataTypes) => {
         address: {
             type: DataTypes.STRING,
             allowNull: false,
+			charset: 'utf8mb4',
+			collate: 'utf8mb4_general_ci',
             comment: '사용자 거주 지역'
         },
 		birthday: {
@@ -58,6 +62,9 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         sequelize,
         modelName: 'Member',
+		timestamps: true,
+		charset: 'utf8mb4',
+		collate: 'utf8mb4_general_ci',
     });
 
     /*Member.associate = function (models) {

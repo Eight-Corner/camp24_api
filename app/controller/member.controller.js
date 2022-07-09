@@ -123,17 +123,13 @@ exports.create = async (req, res) => {
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
 
+
+	console.log("------------------------------------------")
+	console.log(uid)
+	console.log(password)
+	console.log("------------------------------------------")
     const {nickname, email, address, birthday} = req.body;
-
-	await Member.findOne({where: {uid: uid, nickname: nickname}}).then((result) => {
-		if (result) {
-			return res.status(200).json({
-				status: 403,
-				info: {message: "중복된 계정입니다.", type: false},
-			});
-		}
-	});
-
+	console.log(nickname, email, address, birthday)
     await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
         let info = {
             'type': true,
