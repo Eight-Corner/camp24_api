@@ -50,11 +50,6 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             comment: '사용자 거주 지역'
         },
-        pref_area: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            comment: '사용자 선호 지역'
-        },
 		birthday: {
 			type: DataTypes.DATE,
 			allowNull: false,

@@ -124,7 +124,7 @@ exports.create = async (req, res) => {
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
 
-    const {nickname, email, address, pref_area, birthday} = req.body;
+    const {nickname, email, address, birthday} = req.body;
 
 	await Member.findOne({where: {uid: uid, nickname: nickname}}).then((result) => {
 		if (result) {
@@ -135,7 +135,7 @@ exports.create = async (req, res) => {
 		}
 	});
 
-    await Member.create({uid, nickname, email, password, address, pref_area, birthday}).then((result) => {
+    await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
         let info = {
             'type': true,
             message: "success",
@@ -145,7 +145,6 @@ exports.create = async (req, res) => {
             "nickname": result.nickname, // 회원 닉네임
             "email": result.email, // 회원 이메일
             "address": result.address, // 회원 주소
-			"pref_area": result,pref_area, // 회원 선호 지역
 			"birthday": result.birthday, // 회원 생년월일
             "createdAt": result.createdAt, // 회원 생성일
         }
