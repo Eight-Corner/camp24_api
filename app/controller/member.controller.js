@@ -51,30 +51,50 @@ exports.findOne = async (req, res) => {
 
 /**********************
  * Developer : Corner
- * Description : 계정 중복체크, nickname
+ * Description : 계정 닉네임 중복체크, nickname
  **********************/
-exports.dupCheckId = async (req, res) => {
-    const nickname = req.body.nickname;
+exports.dupCheckNick = async (req, res) => {
+	let info = {type: false, message: ''};
+	if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
 
-    await Member.findOne({
-        nickname
-    }).then((result) => {
-        if (result) {
-            res.status(200).send({status: 200, result: false, message: "중복::존재하는 계정"});
-        } else {
-            res.status(200).send({status: 200, result: true, message: "사용가능"});
-        }
-    }).catch((err) => {
-        res.status(500).json({status: 500, message: err.message});
-    });
+	if (!req.body.hasOwnProperty('nickname') || req.body.nickname === '') {
+		info.message = "닉네임을 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+	const nickname = req.body.nickname;
+
+	await Member.findOne({
+		nickname
+	}).then((result) => {
+		if (result.nickname === nickname) {
+			info.type = false
+			info.message = "존재하는 계정"
+			return res.status(200).json({status: 201, info});
+		}
+		info.type = true
+		info.message = "사용가능"
+		return res.status(200).json({status: 200, info});
+	}).catch((err) => {
+		res.status(500).json({status: 500, message: err.message});
+	});
 }
 
 /**********************
  * Developer : Corner
- * Description : 계정 중복체크, email
+ * Description : 계정 이메일 중복체크, email
  **********************/
 exports.dupCheckEmail = async (req, res) => {
 	let info = {type: false, message: ''};
+
 	if (req.body.hasOwnProperty('email') && req.body.email === '') {
 		info.message = "이메일을 입력해주세요.";
 		return res.status(200).json({
@@ -82,22 +102,22 @@ exports.dupCheckEmail = async (req, res) => {
 			info
 		});
 	}
+
 	const email = req.body.email;
+
 	return await Member.findOne({
 		where: {
 			email: email
 		}
 	}).then((result) => {
-		info = {type: false, message: ''}
-		if (result) {
+		if (result.email === email) {
 			info.type = false
 			info.message = "존재하는 계정"
-			return res.status(200).json({status: 200, info});
-		} else {
-			info.type = true
-			info.message = "사용가능"
-			return res.status(200).json({status: 200, info});
+			return res.status(200).json({status: 201, info});
 		}
+		info.type = true
+		info.message = "사용가능"
+		return res.status(200).json({status: 200, info});
 	}).catch((err) => {
 		return res.status(500).json({status: 500, message: err.message});
 	});
