@@ -41,7 +41,7 @@ router.get("/member/:id", controller.findOne);
  *        schema:
  */
 // 중복 체크
-router.post("/member/name", controller.dupCheckNick)
+router.post("/member/nick", controller.dupCheckNick)
 router.post("/member/email", controller.dupCheckEmail)
 
 

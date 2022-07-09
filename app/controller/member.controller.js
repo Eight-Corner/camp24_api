@@ -3,6 +3,22 @@ const Member = db.Member;
 // express-crypto
 const crypto = require('crypto');
 
+
+/**********************
+ * Developer : Corner
+ * Description : 유효성 체크, JSON 형식
+ **********************/
+const emptyJson = (obj) => {
+	return obj.constructor === Object && Object.key(obj).length === 0;
+}
+/**********************
+ * Developer : Corner
+ * Description : 유효성 체크, Properties Check
+ **********************/
+const emptyProperty = (obj, key) => {
+	return obj.hasOwnProperty(key) && obj[key] !== '';
+}
+
 /**********************************
  * Developer : Corner
  * Description : 유저 관련 컨트롤러
@@ -55,7 +71,7 @@ exports.findOne = async (req, res) => {
  **********************/
 exports.dupCheckNick = async (req, res) => {
 	let info = {type: false, message: ''};
-	if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
+	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
 		return res.status(200).json({
 			status: 400,
@@ -63,10 +79,10 @@ exports.dupCheckNick = async (req, res) => {
 		});
 	}
 
-	if (!req.body.hasOwnProperty('nickname') || req.body.nickname === '') {
+	if (emptyProperty(req.body, 'nickname') === true) {
 		info.message = "닉네임을 입력해주세요.";
 		return res.status(200).json({
-			status: 400,
+			status: 401,
 			info
 		});
 	}
@@ -95,7 +111,15 @@ exports.dupCheckNick = async (req, res) => {
 exports.dupCheckEmail = async (req, res) => {
 	let info = {type: false, message: ''};
 
-	if (req.body.hasOwnProperty('email') && req.body.email === '') {
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	if (emptyProperty(req.body, 'email') === true) {
 		info.message = "이메일을 입력해주세요.";
 		return res.status(200).json({
 			status: 400,
