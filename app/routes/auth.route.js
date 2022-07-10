@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controller/auth.controller.js');
 const auth = require('../middleware/auth');
+const refresh = require("../middleware/refresh");
 
 
 /**********************
@@ -9,28 +10,12 @@ const auth = require('../middleware/auth');
  * Description : 로그인
  ***********************/
 router.post('/auth', controller.login);
-/**
- * @swagger
- * paths:
- *  /auth:
- *   post:
- *     tags: [Member]
- *     summary: 로그인
- *     description: email / password로 로그인
- *     parameters:
- *       - name:
- *         in: Post
- *         type: string
- *       - name:
- *         in: Post
- *         type: string
- *     responses:
- *       "200":
- *         description: 로그인 성공
- *
- */
+
+// 인증 사용
 router.use('/auth', auth.verifyToken);
+// 유저 체크
 router.get('/auth', controller.check);
+router.get('/refresh', refresh)
 
 
 module.exports = router;
