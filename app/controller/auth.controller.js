@@ -1,8 +1,11 @@
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const db = require("../models");
 const Member = db.Member;
 
 const crypto = require('crypto');
+
+const jwt = require('../utils/jwt.util');
+const redisClient = require("../utils/redis.util");
 
 // password Check
 exports.decipher = (password, key) => {
@@ -22,7 +25,6 @@ exports.login = async (req, res) => {
 		});
 	}
 	const {email, password} = req.body
-	const secret = process.env.JWT_SECRET;
 	let info = {type: false, message: ''};
 
 	crypto.createHash('sha512').update(password).digest('base64');
@@ -48,28 +50,23 @@ exports.login = async (req, res) => {
 
 			if (hex_password === org_password) {
 
-				const p = new Promise((resolve, reject) => {
-					jwt.sign({email: respond.email}, secret, {expiresIn: '7d'}, (err, token) => {
+				const accessToken = jwt.sign(respond.email);
+				const refreshToken = jwt.refresh();
 
-						if (err) {
-							reject(err);
-						}
-						resolve(token);
-						info.message = '로그인 성공';
-						res.setHeader('Content-Type','application/json; charset=utf-8');
-						res.setHeader('Authorization', 'Bearer ' + token);
-						return res.status(200).header({
-							'Authorization': 'Bearer ' + token,
-						}).json({
-							status: 200,
-							info: info,
-							token: token
-						});
+				redisClient.set(respond.email, refreshToken);
 
-					});
+				info.message = 'success';
+				res.setHeader('Content-Type','application/json; charset=utf-8');
+				res.setHeader('Authorization', 'Bearer ' + accessToken);
+				res.setHeader('Refresh', 'Bearer ' + refreshToken);
+				return res.status(200).json({
+					status: 200,
+					info: info,
+					token: {
+						accessToken: accessToken,
+						refreshToken: refreshToken
+					}
 				});
-
-				return p;
 
 			} else {
 
@@ -84,7 +81,7 @@ exports.login = async (req, res) => {
 		}
 
 	}).catch(err => {
-		info.message = '로그인 실패 <br/>' + err;
+		info.message = '로그인 실패 : ' + err;
 		return res.status(200).json({
 			status: 500,
 			info: info,
@@ -92,6 +89,7 @@ exports.login = async (req, res) => {
 	});
 
 }
+
 
 exports.check = (req, res) => {
 	const info = req.decoded;
