@@ -19,12 +19,20 @@ exports.decipher = (password, key) => {
 
 exports.login = async (req, res) => {
 	if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-		res.status(200).json({
+		return res.status(200).json({
 			status: 400,
 			message: "Error: Body(JSON)값이 비어있습니다."
 		});
 	}
+	if (req.body.hasOwnProperty('email') === false || req.body.hasOwnProperty('password') === false) {
+		return res.status(200).json({
+			status: 400,
+			message: "Error: 이메일 또는 비밀번호가 없습니다."
+		});
+	}
+
 	const {email, password} = req.body
+
 	let info = {type: false, message: ''};
 
 	crypto.createHash('sha512').update(password).digest('base64');

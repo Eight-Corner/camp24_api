@@ -161,12 +161,30 @@ crypto.randomBytes(64, (err, salt) => {
  * Description: 계정 생성
  *********************************/
 exports.create = async (req, res) => {
-    if (req.body.constructor === Object && Object.keys(req.body).length === 0) {
-        res.status(400).send({
-            message: "Error: Body(JSON)값이 비어있습니다."
-        });
-    }
-    // TODO:: UID, Password Crypto
+	let info = {
+		'type': false,
+		message: "failed",
+	}
+
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	let body = req.body;
+	for (let key in body) {
+		if (emptyProperty(body, key) === true) {
+			info.message = `${key}가 잘못되었습니다.`;
+			return res.status(200).json({
+				status: 400,
+				info
+			});
+		}
+	}
+
     let password = req.body.password;
     let uid = req.body.email;
 
@@ -176,18 +194,11 @@ exports.create = async (req, res) => {
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
 
-
-	console.log("------------------------------------------")
-	console.log(uid)
-	console.log(password)
-	console.log("------------------------------------------")
     const {nickname, email, address, birthday} = req.body;
-	console.log(nickname, email, address, birthday)
+
     await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
-        let info = {
-            'type': true,
-            message: "success",
-        }
+		info.type = true;
+		info.message = "success";
         result = {
             "m_no": result.m_no, // 회원 번호
             "nickname": result.nickname, // 회원 닉네임
