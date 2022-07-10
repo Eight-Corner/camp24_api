@@ -9,8 +9,9 @@ const cors = require('cors');
 const notFound = require('./app/middleware/notFound');
 const errorHandler = require('./app/middleware/errorHandler');
 
-const passport = require('passport');
-const passportConfig = require('./app/config/passport.js');
+// const passport = require('passport');
+// const passportConfig = require('./app/config/passport.js');
+
 // const logger = require('morgan');
 // app.use(logger);
 
@@ -26,8 +27,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // passport
-app.use(passport.initialize());
-passportConfig();
+// app.use(passport.initialize());
+// passportConfig();
 
 // cors
 db = require("./app/config/db.config.js");
@@ -39,7 +40,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // dotenv, colors
-dotenv.config({ path: 'src/config/config.env' });
+dotenv.config({ path: 'app/config/config.env' });
 
 const swaggerUi = require('swagger-ui-express');
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(require('./app/swagger/swagger')));

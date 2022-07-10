@@ -23,6 +23,7 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "redis": "^4.2.0",
     "sequelize": "^6.20.1",
     "sequelize-cli": "^6.4.1"
   },
