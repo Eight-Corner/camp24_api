@@ -2,12 +2,8 @@
 ⭐️  캠핑24 api server
 
 
-### How Start?
-```bash
-cd app/
-sequelize db:create --env development
-```
+----
 
+## Patch Note 🌱
 
-### API-DOCS
-> [ONLY WATCH ME - API-DOCS](http://localhost:8080/docs/)
+- AWS Pipeline 배포 개선 완료
