@@ -54,13 +54,15 @@ exports.findAll = async (req, res) => {
  **********************/
 exports.findOne = async (req, res) => {
     await Member.findOne({
-        uid: req.params.uid,
+        m_no: req.params.id,
     }).then((result) => {
         const response = {
             uid: result.uid,
 			m_no: result.m_no,
             nickname: result.nickname,
             email: result.email,
+			addr: result.addr,
+			addr1: result.addr1,
             createdAt: result.createdAt,
         };
         res.status(200).send({status: 200, result: response, message: "success"});
@@ -242,7 +244,7 @@ exports.update = async (req, res) => {
 	}
 
 	const { nickname, addr, addr1 } = body;
-	const { m_no } = req.params;
+	const m_no = req.params.id;
 
 	await Member.update( {nickname, addr, addr1}, { where: { m_no } } ).then((result) => {
 		console.log(result)

@@ -27,7 +27,7 @@ exports.verifyToken = async (req, res, next) => {
 	}
 
 	const p = new Promise((resolve, reject) => {
-		jwt.verify(token, 'jwt-secret-key', (err, decoded) => {
+		jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
 			if (err) { // 토큰이 일치하지 않음.
 				console.error(err)
 				info.type = false;
