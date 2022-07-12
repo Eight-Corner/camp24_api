@@ -9,7 +9,9 @@ exports.verifyToken = async (req, res, next) => {
 			message: '로그인이 필요합니다.'
 		});
 	}
+
 	const token = req.headers.authorization.split('Bearer ')[1] || req.headers['x-access-token']
+	// header에서 access token을 가져옴. 토큰이 있는지 없는지에 대한 유효성 검증도 필요함.
 	if (!token || token === 'null') {
 		return res.status(200).json({
 			status: 403,
