@@ -241,7 +241,8 @@ exports.update = async (req, res) => {
 		}
 	}
 
-	const { m_no, nickname, addr, addr1 } = body;
+	const { nickname, addr, addr1 } = body;
+	const { m_no } = req.params;
 
 	await Member.update( {nickname, addr, addr1}, { where: { m_no } } ).then((result) => {
 		console.log(result)
