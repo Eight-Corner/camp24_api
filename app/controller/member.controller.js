@@ -241,9 +241,9 @@ exports.update = async (req, res) => {
 		}
 	}
 
-	const { nickname, addr, addr1 } = body;
+	const { m_no, nickname, addr, addr1 } = body;
 
-	await Member.update({nickname, addr, addr1}).then((result) => {
+	await Member.update( {nickname, addr, addr1}, { where: { m_no } } ).then((result) => {
 		console.log(result)
 		if (result) {
 			info.type = true;
