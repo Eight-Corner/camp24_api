@@ -269,3 +269,39 @@ exports.update = async (req, res) => {
 	})
 
 }
+
+/************************
+ * Developer : Corner
+ * Description : 계정 정보 삭제
+ * ************************/
+exports.delete = async (req, res, next) => {
+	const m_no = req.params.id;
+	if (!m_no) {
+		info.type = false;
+		info.message = '계정 정보를 삭제하는데 실패하였습니다.';
+		res.status(400).json({
+			status: 400,
+			info
+		});
+	}
+
+	Member.destroy({ where: { m_no } }).then((result) => {
+		if (result == 1) {
+			info.type = true;
+			info.message = 'success';
+			return res.status(200).json({
+				status: 200,
+				info
+			});
+		} else {
+			info.type = false;
+			info.message = '계정 정보를 삭제하는데 실패하였습니다.';
+			res.status(400).json({
+				status: 400,
+				info
+			});
+		}
+	});
+
+
+}
