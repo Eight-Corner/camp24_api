@@ -61,12 +61,14 @@ exports.login = async (req, res) => {
 				const accessToken = jwt.sign(respond.email);
 				const refreshToken = jwt.refresh();
 
+				// redis에 이메일과 토큰을 담음
 				redisClient.set(respond.email, refreshToken);
 
 				info.message = 'success';
 				res.setHeader('Content-Type','application/json; charset=utf-8');
 				res.setHeader('Authorization', 'Bearer ' + accessToken);
 				res.setHeader('Refresh', 'Bearer ' + refreshToken);
+				// 헤더에 담아주기도 하고, response 값으로도 보내줌.
 				return res.status(200).json({
 					status: 200,
 					info: info,

@@ -19,6 +19,9 @@ router.post("/email", controller.dupCheckEmail)
 // 유저 생성
 router.post("/", controller.create);
 
+// 유저 수정
+router.put("/:id", auth.verifyToken, controller.update);
+
 
 
 

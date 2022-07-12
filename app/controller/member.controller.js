@@ -3,6 +3,10 @@ const Member = db.Member;
 // express-crypto
 const crypto = require('crypto');
 
+let info = {
+	'type': false,
+	message: "failed",
+}
 
 /**********************
  * Developer : Corner
@@ -16,7 +20,7 @@ const emptyJson = (obj) => {
  * Description : 유효성 체크, Properties Check
  **********************/
 const emptyProperty = (obj, key) => {
-	return obj.hasOwnProperty(key) && obj[key] !== '';
+	return !obj.hasOwnProperty(key) || obj[key] === '';
 }
 
 /**********************************
@@ -50,13 +54,15 @@ exports.findAll = async (req, res) => {
  **********************/
 exports.findOne = async (req, res) => {
     await Member.findOne({
-        uid: req.params.uid,
+        m_no: req.params.id,
     }).then((result) => {
         const response = {
             uid: result.uid,
 			m_no: result.m_no,
             nickname: result.nickname,
             email: result.email,
+			addr: result.addr,
+			addr1: result.addr1,
             createdAt: result.createdAt,
         };
         res.status(200).send({status: 200, result: response, message: "success"});
@@ -70,7 +76,6 @@ exports.findOne = async (req, res) => {
  * Description : 계정 닉네임 중복체크, nickname
  **********************/
 exports.dupCheckNick = async (req, res) => {
-	let info = {type: false, message: ''};
 	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
 		return res.status(200).json({
@@ -109,7 +114,6 @@ exports.dupCheckNick = async (req, res) => {
  * Description : 계정 이메일 중복체크, email
  **********************/
 exports.dupCheckEmail = async (req, res) => {
-	let info = {type: false, message: ''};
 
 	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
@@ -161,10 +165,6 @@ crypto.randomBytes(64, (err, salt) => {
  * Description: 계정 생성
  *********************************/
 exports.create = async (req, res) => {
-	let info = {
-		'type': false,
-		message: "failed",
-	}
 
 	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
@@ -177,6 +177,8 @@ exports.create = async (req, res) => {
 	let body = req.body;
 	for (let key in body) {
 		if (emptyProperty(body, key) === true) {
+			console.log(emptyProperty(body, key))
+			console.log(body[key])
 			info.message = `${key}가 잘못되었습니다.`;
 			return res.status(200).json({
 				status: 400,
@@ -194,16 +196,17 @@ exports.create = async (req, res) => {
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
 
-    const {nickname, email, address, birthday} = req.body;
+    const {nickname, email, addr, addr1, birthday} = body;
 
-    await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
+    await Member.create({uid, nickname, email, password, addr, addr1, birthday}).then((result) => {
 		info.type = true;
 		info.message = "success";
         result = {
             "m_no": result.m_no, // 회원 번호
             "nickname": result.nickname, // 회원 닉네임
             "email": result.email, // 회원 이메일
-            "address": result.address, // 회원 주소
+            "addr": result.addr, // 회원 주소
+            "addr1": result.addr1, // 회원 주소
 			"birthday": result.birthday, // 회원 생년월일
             "createdAt": result.createdAt, // 회원 생성일
         }
@@ -214,3 +217,55 @@ exports.create = async (req, res) => {
         return res.status(500).send({status: 500, message: err.message});
     });
 };
+
+/***********************
+ * Developer : Corner
+ * Description : 계정 정보 수정
+ ***********************/
+exports.update = async (req, res) => {
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	let body = req.body;
+
+	for (let key in body) {
+		if (emptyProperty(body, key) === true) {
+			info.message = `${key}가 잘못되었습니다.`;
+			return res.status(200).json({
+				status: 400,
+				info
+			});
+		}
+	}
+
+	const { nickname, addr, addr1 } = body;
+	const m_no = req.params.id;
+
+	await Member.update( {nickname, addr, addr1}, { where: { m_no } } ).then((result) => {
+		console.log(result)
+		if (result) {
+			info.type = true;
+			info.message = 'success';
+			return res.status(200).json({
+				status: 200,
+				info
+			});
+		} else {
+			info.type = false;
+			info.message = '정보 수정에 실패하였습니다.';
+			return res.status(200).json({
+				status: 401,
+				info
+			});
+		}
+	}).catch((err) => {
+		console.log(err);
+		return res.status(500).send({status: 500, message: err.message});
+	})
+
+}
