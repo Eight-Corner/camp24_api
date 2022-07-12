@@ -20,7 +20,7 @@ const emptyJson = (obj) => {
  * Description : 유효성 체크, Properties Check
  **********************/
 const emptyProperty = (obj, key) => {
-	return obj.hasOwnProperty(key) && obj[key] !== '';
+	return !obj.hasOwnProperty(key) || obj[key] === '';
 }
 
 /**********************************
@@ -175,6 +175,8 @@ exports.create = async (req, res) => {
 	let body = req.body;
 	for (let key in body) {
 		if (emptyProperty(body, key) === true) {
+			console.log(emptyProperty(body, key))
+			console.log(body[key])
 			info.message = `${key}가 잘못되었습니다.`;
 			return res.status(200).json({
 				status: 400,
@@ -192,16 +194,17 @@ exports.create = async (req, res) => {
     crypto.createHash('sha512').update(uid).digest('base64');
     uid = crypto.createHash('sha512').update(uid).digest('hex');
 
-    const {nickname, email, address, birthday} = req.body;
+    const {nickname, email, addr, addr1, birthday} = body;
 
-    await Member.create({uid, nickname, email, password, address, birthday}).then((result) => {
+    await Member.create({uid, nickname, email, password, addr, addr1, birthday}).then((result) => {
 		info.type = true;
 		info.message = "success";
         result = {
             "m_no": result.m_no, // 회원 번호
             "nickname": result.nickname, // 회원 닉네임
             "email": result.email, // 회원 이메일
-            "address": result.address, // 회원 주소
+            "addr": result.addr, // 회원 주소
+            "addr1": result.addr1, // 회원 주소
 			"birthday": result.birthday, // 회원 생년월일
             "createdAt": result.createdAt, // 회원 생성일
         }
@@ -238,5 +241,28 @@ exports.update = async (req, res) => {
 		}
 	}
 
+	const { nickname, addr, addr1 } = body;
+
+	await Member.update({nickname, addr, addr1}).then((result) => {
+		console.log(result)
+		if (result) {
+			info.type = true;
+			info.message = 'success';
+			return res.status(200).json({
+				status: 200,
+				info
+			});
+		} else {
+			info.type = false;
+			info.message = '정보 수정에 실패하였습니다.';
+			return res.status(200).json({
+				status: 401,
+				info
+			});
+		}
+	}).catch((err) => {
+		console.log(err);
+		return res.status(500).send({status: 500, message: err.message});
+	})
 
 }
