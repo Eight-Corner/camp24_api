@@ -47,12 +47,19 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             comment: '사용자 비밀번호'
         },
-        address: {
+        addr: {
             type: DataTypes.STRING,
             allowNull: false,
 			charset: 'utf8mb4',
 			collate: 'utf8mb4_general_ci',
-            comment: '사용자 거주 지역'
+            comment: 'e.g) 경기도, 전남, 전북, 서울, 대전, 대구, 인천'
+        },
+        addr1: {
+            type: DataTypes.STRING,
+            allowNull: false,
+			charset: 'utf8mb4',
+			collate: 'utf8mb4_general_ci',
+            comment: '거주 지역, 구 / 동, e.g) 영등포구 / 예시동'
         },
 		birthday: {
 			type: DataTypes.DATE,

@@ -3,6 +3,10 @@ const Member = db.Member;
 // express-crypto
 const crypto = require('crypto');
 
+let info = {
+	'type': false,
+	message: "failed",
+}
 
 /**********************
  * Developer : Corner
@@ -70,7 +74,6 @@ exports.findOne = async (req, res) => {
  * Description : 계정 닉네임 중복체크, nickname
  **********************/
 exports.dupCheckNick = async (req, res) => {
-	let info = {type: false, message: ''};
 	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
 		return res.status(200).json({
@@ -109,7 +112,6 @@ exports.dupCheckNick = async (req, res) => {
  * Description : 계정 이메일 중복체크, email
  **********************/
 exports.dupCheckEmail = async (req, res) => {
-	let info = {type: false, message: ''};
 
 	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
@@ -161,10 +163,6 @@ crypto.randomBytes(64, (err, salt) => {
  * Description: 계정 생성
  *********************************/
 exports.create = async (req, res) => {
-	let info = {
-		'type': false,
-		message: "failed",
-	}
 
 	if (emptyJson(req.body.constructor) === true) {
 		info.message = "JSON 형식의 데이터를 입력해주세요.";
@@ -214,3 +212,31 @@ exports.create = async (req, res) => {
         return res.status(500).send({status: 500, message: err.message});
     });
 };
+
+/***********************
+ * Developer : Corner
+ * Description : 계정 정보 수정
+ ***********************/
+exports.update = async (req, res) => {
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	let body = req.body;
+
+	for (let key in body) {
+		if (emptyProperty(body, key) === true) {
+			info.message = `${key}가 잘못되었습니다.`;
+			return res.status(200).json({
+				status: 400,
+				info
+			});
+		}
+	}
+
+
+}
