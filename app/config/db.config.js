@@ -4,12 +4,12 @@ let isDev = false
 // HOST: 'localhost',
 const config = {
     dev: {
-        HOST: '127.0.0.1',
+        HOST: 'localhost',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },
     prod: {
-        HOST: '127.0.0.1',
+        HOST: 'localhost',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },

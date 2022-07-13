@@ -46,7 +46,7 @@ app.use('/', router)
 const https = require('https');
 const http = require("http");
 const fs = require('fs');
-
+const path = require('path');
 // Custom middleware here
 app.use(notFound);
 app.use(errorHandler);
@@ -58,12 +58,10 @@ const PORT = process.env.PORT || 443;
 // development 모드에서는 option 이 falsy한 값
 const {getConfig, isDev} = require("./app/config/db.config.js");
 
-const option = isDev ?
-	undefined :
-{
-	key: fs.readFileSync(__dirname + "/cert/develop-corner_com.key"),
-	cert: fs.readFileSync(__dirname + "/cert/develop-corner_com__crt.pem"),
-	ca: fs.readFileSync(__dirname + "/cert/develop-corner_com__bundle.pem")
+const option = {
+	key: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com.key"), "utf-8"),
+	cert: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com__crt.pem"), "utf-8"),
+	ca: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com__bundle.pem"), "utf-8")
 }
 // production 모드에서는 https 서버를
 // development 모드에서는 http 서버를 사용합니다
