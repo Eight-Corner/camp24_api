@@ -44,9 +44,8 @@ app.use('/', router)
 
 //ssl 자체 인증(서명) 서버를 만들기위해서는 key와 csr이 필요하다.
 const https = require('https');
-const fs = require('fs');
-const path = require('path');
 const http = require("http");
+const fs = require('fs');
 
 // Custom middleware here
 app.use(notFound);
@@ -55,12 +54,9 @@ app.use(errorHandler);
 const PORT = process.env.PORT;
 
 /* SSL option */
-// production 모드에서는 option 이 truthy한 값이고
-// development 모드에서는 option 이 falsy한 값입니다
+// production 모드에서는 option 이 truthy한 값
+// development 모드에서는 option 이 falsy한 값
 const {getConfig, isDev} = require("./app/config/db.config.js");
-console.log("?????????????????????")
-console.log(isDev)
-console.log(getConfig('HOST'))
 process.env.NODE_ENV = isDev ? "development" : "production";
 
 const option = process.env.NODE_ENV === "production" ? {
@@ -72,28 +68,14 @@ const option = process.env.NODE_ENV === "production" ? {
 		} : undefined;
 
 // production 모드에서는 https 서버를
-// development 모드에서는 http 서버를 사용합니다
+// development 모드에서는 http 서버를 사용
 option
 	? https.createServer(option, app).listen(PORT, () => {
-		console.log(`SSL Server is running at port ${PORT}`);
+		console.log(`SSL Server is running at port ${PORT}`.yellow.bold);
 	})
 	: http.createServer(app).listen(PORT, () => {
-		console.log(`Server is running at port ${PORT}`);
+		console.log(`HTTP Server is running at port ${PORT}`.yellow.bold);
 	});
-/*
-const sslServer = https.createServer(
-	{
-		// key: fs.readFileSync(path.join(__dirname, "cert", "key.pem"), "utf-8"),
-		// cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem"), "utf-8"),
-		key: fs.readFileSync(__dirname + '/인증서경로/domain_xxxxx.key.pem'),
-		cert: fs.readFileSync(__dirname + '/인증서경로/domain_xxxxx.crt.pem'),
-		ca: fs.readFileSync(__dirname + '/인증서경로/ca-chain-bundle.pem')
-	},
-	app
-);
-sslServer.listen(PORT, () => {
-    console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
-});*/
 
 /*app.listen(PORT, () => {
     console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
