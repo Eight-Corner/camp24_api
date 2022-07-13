@@ -51,7 +51,7 @@ const fs = require('fs');
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 443;
 
 /* SSL option */
 // production 모드에서는 option 이 truthy한 값
