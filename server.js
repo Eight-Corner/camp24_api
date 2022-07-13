@@ -43,28 +43,55 @@ const router = require("./app/routes/routes.js");
 app.use('/', router)
 
 //ssl 자체 인증(서명) 서버를 만들기위해서는 key와 csr이 필요하다.
-/*
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
-
-const sslServer = https.createServer(
-	{
-		key: fs.readFileSync(path.join(__dirname, "cert", "key.pem"), "utf-8"),
-		cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem"), "utf-8"),
-	},
-	app
-);
-sslServer.listen(PORT, () => {
-    console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
-});
-*/
+const http = require("http");
 
 // Custom middleware here
 app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT;
-app.listen(PORT, () => {
+
+/* SSL option */
+// production 모드에서는 option 이 truthy한 값이고
+// development 모드에서는 option 이 falsy한 값입니다
+const {getConfig, isDev} = require("./app/config/db.config.js");
+process.env.NODE_ENV = isDev ? "development" : "production";
+
+const option = process.env.NODE_ENV === "production" ? {
+			key: fs.readFileSync(__dirname + "/cert/develop-corner_com.key"),
+			cert: fs.readFileSync(
+				__dirname + "/cert/develop-corner_com__crt.pem"
+			),
+			ca: fs.readFileSync(__dirname + "/cert/develop-corner_com__bundle.pem")
+		} : undefined;
+
+// production 모드에서는 https 서버를
+// development 모드에서는 http 서버를 사용합니다
+option
+	? https.createServer(option, app).listen(PORT, () => {
+		console.log(`Server is running at port ${PORT}`);
+	})
+	: http.createServer(app).listen(PORT, () => {
+		console.log(`Server is running at port ${PORT}`);
+	});
+/*
+const sslServer = https.createServer(
+	{
+		// key: fs.readFileSync(path.join(__dirname, "cert", "key.pem"), "utf-8"),
+		// cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem"), "utf-8"),
+		key: fs.readFileSync(__dirname + '/인증서경로/domain_xxxxx.key.pem'),
+		cert: fs.readFileSync(__dirname + '/인증서경로/domain_xxxxx.crt.pem'),
+		ca: fs.readFileSync(__dirname + '/인증서경로/ca-chain-bundle.pem')
+	},
+	app
+);
+sslServer.listen(PORT, () => {
     console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
-});
+});*/
+
+/*app.listen(PORT, () => {
+    console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
+});*/

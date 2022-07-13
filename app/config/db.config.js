@@ -9,7 +9,7 @@ let config = {
         PASSWORD: 'Thiskim12!@',
     },
     prod: {
-        HOST: 'http://develop-corner.com',
+        HOST: 'https://develop-corner.com',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },
