@@ -15,9 +15,9 @@ const errorHandler = require('./app/middleware/errorHandler');
 // database
 const models = require("./app/models/index.js");
 models.sequelize.sync().then(() => {
-    console.log("DB Connect Success");
+	console.log("DB Connect Success");
 }).catch((err) => {
-    console.log("DB Connect Error", err);
+	console.log("DB Connect Error", err);
 });
 
 app.use(express.json());
@@ -27,13 +27,13 @@ app.use(express.urlencoded({extended: true}));
 db = require("./app/config/db.config.js");
 
 const corsOptions = {
-    origin: '*',
-    credentials: true
+	origin: '*',
+	credentials: true
 }
 
 app.use(cors(corsOptions));
 // dotenv, colors
-dotenv.config({ path: 'app/config/config.env' });
+dotenv.config({path: 'app/config/config.env'});
 
 const swaggerUi = require('swagger-ui-express');
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(require('./app/swagger/swagger')));
@@ -58,25 +58,26 @@ const PORT = process.env.PORT;
 // production 모드에서는 option 이 truthy한 값이고
 // development 모드에서는 option 이 falsy한 값입니다
 const {getConfig, isDev} = require("./app/config/db.config.js");
-process.env.NODE_ENV = isDev ? "development" : "production";
 
-const option = process.env.NODE_ENV === "production" ? {
-			key: fs.readFileSync(__dirname + "/cert/develop-corner_com.key"),
-			cert: fs.readFileSync(
-				__dirname + "/cert/develop-corner_com__crt.pem"
-			),
-			ca: fs.readFileSync(__dirname + "/cert/develop-corner_com__bundle.pem")
-		} : undefined;
+const option = isDev === false ? {
+	key: fs.readFileSync(__dirname + "/cert/develop-corner_com.key"),
+	cert: fs.readFileSync(
+		__dirname + "/cert/develop-corner_com__crt.pem"
+	),
+	ca: fs.readFileSync(__dirname + "/cert/develop-corner_com__bundle.pem")
+} : undefined;
 
 // production 모드에서는 https 서버를
 // development 모드에서는 http 서버를 사용합니다
-option
-	? https.createServer(option, app).listen(PORT, () => {
-		console.log(`Server is running at port ${PORT}`);
+isDev === false ?
+	https.createServer(option, app).listen(PORT, () => {
+		console.log(`SSL Server is running at port ${PORT}`.yellow.bold);
 	})
-	: http.createServer(app).listen(PORT, () => {
-		console.log(`Server is running at port ${PORT}`);
-	});
+	:
+	http.createServer(app).listen(PORT, () => {
+		console.log(`Server is running at port ${PORT}`.yellow.bold);
+	})
+;
 /*
 const sslServer = https.createServer(
 	{
