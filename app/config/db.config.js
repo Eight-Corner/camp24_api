@@ -2,7 +2,7 @@
 let isDev = false
 
 // HOST: 'localhost',
-let config = {
+const config = {
     dev: {
         HOST: '127.0.0.1',
         USER: 'admin',
@@ -28,7 +28,7 @@ module.exports = {
     HOST: "127.0.0.1",
     PORT: "3306",
     USER: getConfig('USER'),
-    PASSWORD: "Thiskim12!@",
+    PASSWORD: getConfig('PASSWORD'),
     DB: "camp24",
     dialect: "mysql",
     dialectOptions: {
