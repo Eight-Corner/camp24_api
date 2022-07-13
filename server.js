@@ -58,23 +58,22 @@ const PORT = process.env.PORT;
 // development 모드에서는 option 이 falsy한 값
 const {getConfig, isDev} = require("./app/config/db.config.js");
 
-const option = isDev === false ? {
+const option = isDev ?
+	undefined :
+{
 	key: fs.readFileSync(__dirname + "/cert/develop-corner_com.key"),
-	cert: fs.readFileSync(
-		__dirname + "/cert/develop-corner_com__crt.pem"
-	),
+	cert: fs.readFileSync(__dirname + "/cert/develop-corner_com__crt.pem"),
 	ca: fs.readFileSync(__dirname + "/cert/develop-corner_com__bundle.pem")
-} : undefined;
-
+}
 // production 모드에서는 https 서버를
-// development 모드에서는 http 서버를 사용
-isDev === false ?
-	https.createServer(option, app).listen(PORT, () => {
-		console.log(`SSL Server is running at port ${PORT}`.yellow.bold);
-	})
-	:
+// development 모드에서는 http 서버를 사용합니다
+isDev ?
 	http.createServer(app).listen(PORT, () => {
 		console.log(`Server is running at port ${PORT}`.yellow.bold);
+	})
+	:
+	https.createServer(option, app).listen(PORT, () => {
+		console.log(`SSL Server is running at port ${PORT}`.yellow.bold);
 	})
 ;
 /*
