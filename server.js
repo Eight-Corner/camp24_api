@@ -42,6 +42,23 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(require('./app/swagger/swagger
 const router = require("./app/routes/routes.js");
 app.use('/', router)
 
+//ssl 자체 인증(서명) 서버를 만들기위해서는 key와 csr이 필요하다.
+/*
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
+const sslServer = https.createServer(
+	{
+		key: fs.readFileSync(path.join(__dirname, "cert", "key.pem"), "utf-8"),
+		cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem"), "utf-8"),
+	},
+	app
+);
+sslServer.listen(PORT, () => {
+    console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
+});
+*/
 
 // Custom middleware here
 app.use(notFound);
