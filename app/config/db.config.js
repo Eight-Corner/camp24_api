@@ -1,5 +1,5 @@
 // todo:: true : dev, false: prod
-let isDev = false
+let isDev = true
 
 // HOST: 'localhost',
 const config = {
