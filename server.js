@@ -58,6 +58,9 @@ const PORT = process.env.PORT;
 // production 모드에서는 option 이 truthy한 값이고
 // development 모드에서는 option 이 falsy한 값입니다
 const {getConfig, isDev} = require("./app/config/db.config.js");
+console.log("?????????????????????")
+console.log(isDev)
+console.log(getConfig('HOST'))
 process.env.NODE_ENV = isDev ? "development" : "production";
 
 const option = process.env.NODE_ENV === "production" ? {
@@ -72,7 +75,7 @@ const option = process.env.NODE_ENV === "production" ? {
 // development 모드에서는 http 서버를 사용합니다
 option
 	? https.createServer(option, app).listen(PORT, () => {
-		console.log(`Server is running at port ${PORT}`);
+		console.log(`SSL Server is running at port ${PORT}`);
 	})
 	: http.createServer(app).listen(PORT, () => {
 		console.log(`Server is running at port ${PORT}`);

@@ -4,20 +4,20 @@ let isDev = false
 // HOST: 'localhost',
 let config = {
     dev: {
-        HOST: 'localhost',
+        HOST: '127.0.0.1',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },
     prod: {
-        HOST: 'https://develop-corner.com',
+        HOST: '127.0.0.1',
         USER: 'admin',
         PASSWORD: 'Thiskim12!@',
     },
 }
 
 function getConfig(key) {
-    return config.dev[key];
-    // return isDev ? config.dev[key] : config.dev[key];
+    // return config.dev[key];
+    return isDev ? config.dev[key] : config.prod[key];
 }
 
 //    "host": "ec2-107-23-80-232.compute-1.amazonaws.com",
@@ -25,7 +25,7 @@ module.exports = {
     isDev,
     config,
     getConfig,
-    HOST: "localhost",
+    HOST: "127.0.0.1",
     PORT: "3306",
     USER: getConfig('USER'),
     PASSWORD: "Thiskim12!@",
