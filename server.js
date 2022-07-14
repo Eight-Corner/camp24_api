@@ -70,7 +70,7 @@ isDev ?
 		console.log(`Server is running at port ${PORT}`.yellow.bold);
 	})
 	:
-	https.createServer(option, app).listen(443, () => {
+	https.createServer(option, app).listen(PORT, () => {
 		console.log(`SSL Server is running at port ${PORT}`.yellow.bold);
 	})
 ;
