@@ -51,13 +51,13 @@ const path = require('path');
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 443;
 
 /* SSL option */
 // production 모드에서는 option 이 truthy한 값
 // development 모드에서는 option 이 falsy한 값
 const {getConfig, isDev} = require("./app/config/db.config.js");
 
+const PORT = isDev ? process.env.PORT : 443;
 const option = {
 	key: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com.key"), "utf-8"),
 	cert: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com__crt.pem"), "utf-8"),
