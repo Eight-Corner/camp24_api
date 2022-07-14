@@ -63,8 +63,9 @@ const option = {
 	cert: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com__crt.pem"), "utf-8"),
 	ca: fs.readFileSync(path.join(__dirname, "cert", "/develop-corner_com__bundle.pem"), "utf-8")
 }
+
 // production 모드에서는 https 서버를
-// development 모드에서는 http 서버를 사용합니다
+// development 모드에서는 http 서버를 사용
 isDev ?
 	http.createServer(app).listen(PORT, () => {
 		console.log(`Server is running at port ${PORT}`.yellow.bold);
@@ -74,22 +75,3 @@ isDev ?
 		console.log(`SSL Server is running at port ${PORT}`.yellow.bold);
 	})
 ;
-/*
-const sslServer = https.createServer(
-	{
-		// key: fs.readFileSync(path.join(__dirname, "cert", "key.pem"), "utf-8"),
-		// cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem"), "utf-8"),
-		key: fs.readFileSync(__dirname + '/인증서경로/domain_xxxxx.key.pem'),
-		cert: fs.readFileSync(__dirname + '/인증서경로/domain_xxxxx.crt.pem'),
-		ca: fs.readFileSync(__dirname + '/인증서경로/ca-chain-bundle.pem')
-	},
-	app
-);
-sslServer.listen(PORT, () => {
-    console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
-});*/
-
-/*app.listen(PORT, () => {
-    console.log(`::::::Server up and running is Develop mode on port ${PORT}`.yellow.bold)
-});*/
-
