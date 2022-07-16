@@ -6,6 +6,21 @@ const crypto = require('crypto');
 
 const jwt = require('../utils/jwt.util');
 const redisClient = require("../utils/redis.util");
+const ejs = require('ejs');
+const nodemailer = require('nodemailer');
+const path = require('path');
+let appDir = path.dirname(require.main.filename);
+
+/***********************
+ * Description : 에러처리 함수
+ ************************/
+function errFunction(res) {
+	return res.status(200).json({
+		status: 500,
+		message: "Error: 이메일 인증 서버에 문제가 발생하였습니다."
+	});
+}
+
 
 // password Check
 exports.decipher = (password, key) => {
@@ -112,3 +127,62 @@ exports.check = (req, res) => {
 		info: info,
 	})
 };
+
+
+/*************************
+ * Developer: corner,
+ * Description: 회원가입 이메일 인증
+ * ***********************/
+exports.emailSignUp = async (req, res) => {
+	let auth_key = '';
+	let emailTemplates;
+
+	if (!req.body.hasOwnProperty('email') || req.body.email == '') {
+		return res.status(400).json({
+			status: 400,
+			message: "Error: 이메일이 없습니다."
+		});
+	}
+
+	auth_key = Math.random().toString().substring(2, 6);
+	ejs.renderFile(appDir + '/utils/authMail.ejs', {authCode: auth_key}, async (err, data) => {
+		if (err) {
+			console.log(err);
+			console.log("-------------err")
+			await errFunction(res);
+		}
+		emailTemplates = data;
+	});
+
+	let transporter = nodemailer.createTransport({
+		service: 'gmail',
+		host: 'smtp.gmail.com',
+		port: 587,
+		secure: false,
+		auth: {
+			user: process.env.NODEMAILER_USER,
+			pass: process.env.NODEMAILER_PASS
+		},
+	});
+
+	console.log(emailTemplates)
+
+	let mailOptions = await transporter.sendMail({
+		from: '캠핑친구24',
+		to: req.body.email,
+		subject: '회원가입을 위한 인증번호를 입력해주세요.',
+		html: emailTemplates,
+	});
+
+	transporter.sendMail(mailOptions, async (err, info) => {
+		if (err) {
+			console.log(err);
+			await errFunction(res);
+		}
+		console.log("sending mail.." + info.response);
+		res.send(auth_key);
+		transporter.close();
+	});
+
+
+}
