@@ -25,6 +25,11 @@ router.put("/:id", auth.verifyToken, controller.update);
 // 회원 탈퇴
 router.delete("/:id", auth.verifyToken, controller.delete);
 
+/**************
+ * Developer: corner,
+ * Description: 이메일 인증
+ * *************/
+router.post('/check/email', controller.emailSignUp);
 
 
 

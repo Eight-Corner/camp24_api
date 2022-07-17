@@ -11,7 +11,7 @@ const refresh = require("../middleware/refresh");
 router.post('/auth', controller.login);
 
 // 인증 사용
-// router.use('/auth', auth.verifyToken);
+router.use('/auth', auth.verifyToken);
 // 유저 체크
 router.get('/auth', controller.check);
 
@@ -19,11 +19,6 @@ router.get('/auth', controller.check);
   클라이언트는 access token과 refresh token을 둘 다 헤더에 담아서 요청해야합니다. */
 router.get('/refresh', refresh);
 
-/**************
- * Developer: corner,
- * Description: 이메일 인증
- * *************/
-router.post('/auth/email', controller.emailSignUp);
 
 
 module.exports = router;
