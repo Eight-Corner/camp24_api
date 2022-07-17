@@ -326,7 +326,7 @@ exports.delete = async (req, res, next) => {
  * Developer: corner,
  * Description: 회원가입 이메일 인증
  * ***********************/
-exports.emailSignUp = async (req, res) => {
+exports.emailSend = async (req, res) => {
 	let auth_key = '';
 	let emailTemplates;
 
