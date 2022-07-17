@@ -145,7 +145,7 @@ exports.emailSignUp = async (req, res) => {
 	}
 
 	auth_key = Math.random().toString().substring(2, 6);
-	ejs.renderFile(appDir + '/utils/authMail.ejs', {authCode: auth_key}, async (err, data) => {
+	ejs.renderFile(appDir + '/utils/authMail.ejs', {auth_key: auth_key}, async (err, data) => {
 		if (err) {
 			console.log(err);
 			await errFunction(res);
