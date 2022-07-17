@@ -6,11 +6,22 @@ const ejs = require("ejs");
 const nodemailer = require("nodemailer");
 
 const path = require('path');
+const {error_400, error_500} = require("../middleware/errorHandler");
 let appDir = path.dirname(require.main.filename) + '/app';
 
 let info = {
 	'type': false,
 	message: "failed",
+}
+
+/***********************
+ * Description : 500 에러처리 함수
+ ************************/
+function errFunction(res, msg) {
+	return res.status(200).json({
+		status: 500,
+		message: "Error: " + msg
+	});
 }
 
 /**********************
@@ -319,18 +330,31 @@ exports.emailSignUp = async (req, res) => {
 	let auth_key = '';
 	let emailTemplates;
 
-	if (!req.body.hasOwnProperty('email') || req.body.email == '') {
-		return res.status(400).json({
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
 			status: 400,
-			message: "Error: 이메일이 없습니다."
+			info
 		});
+	}
+
+	let body = req.body;
+
+	for (let key in body) {
+		if (emptyProperty(body, key) === true) {
+			info.message = `${key}가 잘못되었습니다.`;
+			return res.status(200).json({
+				status: 400,
+				info
+			});
+		}
 	}
 
 	auth_key = Math.random().toString().substring(2, 6);
 	ejs.renderFile(appDir + '/utils/authMail.ejs', {auth_key: auth_key}, async (err, data) => {
 		if (err) {
 			console.log(err);
-			await errFunction(res);
+			await error_500(res, err);
 		}
 		emailTemplates = data;
 	});
@@ -346,8 +370,6 @@ exports.emailSignUp = async (req, res) => {
 		},
 	});
 
-	console.log(emailTemplates)
-
 	let mailOptions = await transporter.sendMail({
 		from: '캠핑친구24',
 		to: req.body.email,
@@ -357,12 +379,17 @@ exports.emailSignUp = async (req, res) => {
 
 	transporter.sendMail(mailOptions, async (err, info) => {
 		if (err) {
-			console.log(err);
-			await errFunction(res);
+			await error_500(res, err);
 		}
-		console.log("sending mail.." + info.response);
-		res.send(auth_key);
 		transporter.close();
+		info = {};
+		info.type = true;
+		info.message = '인증메일이 전송 되었습니다.';
+		return res.status(200).json({
+			status: 200,
+			data: {auth_key},
+			info
+		})
 	});
 
 

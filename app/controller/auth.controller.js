@@ -7,16 +7,6 @@ const crypto = require('crypto');
 const jwt = require('../utils/jwt.util');
 const redisClient = require("../utils/redis.util");
 
-/***********************
- * Description : 에러처리 함수
- ************************/
-function errFunction(res) {
-	return res.status(200).json({
-		status: 500,
-		message: "Error: 이메일 인증 서버에 문제가 발생하였습니다."
-	});
-}
-
 
 // password Check
 exports.decipher = (password, key) => {
