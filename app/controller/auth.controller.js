@@ -9,7 +9,7 @@ const redisClient = require("../utils/redis.util");
 const ejs = require('ejs');
 const nodemailer = require('nodemailer');
 const path = require('path');
-let appDir = path.dirname(require.main.filename);
+let appDir = path.dirname(require.main.filename) + '/app';
 
 /***********************
  * Description : 에러처리 함수
@@ -148,7 +148,6 @@ exports.emailSignUp = async (req, res) => {
 	ejs.renderFile(appDir + '/utils/authMail.ejs', {authCode: auth_key}, async (err, data) => {
 		if (err) {
 			console.log(err);
-			console.log("-------------err")
 			await errFunction(res);
 		}
 		emailTemplates = data;

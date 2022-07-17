@@ -11,7 +11,7 @@ const refresh = require("../middleware/refresh");
 router.post('/auth', controller.login);
 
 // 인증 사용
-router.use('/auth', auth.verifyToken);
+// router.use('/auth', auth.verifyToken);
 // 유저 체크
 router.get('/auth', controller.check);
 
