@@ -2,10 +2,26 @@ const db = require("../models");
 const Member = db.Member;
 // express-crypto
 const crypto = require('crypto');
+const ejs = require("ejs");
+const nodemailer = require("nodemailer");
+
+const path = require('path');
+const {error_400, error_500} = require("../middleware/errorHandler");
+let appDir = path.dirname(require.main.filename) + '/app';
 
 let info = {
 	'type': false,
 	message: "failed",
+}
+
+/***********************
+ * Description : 500 에러처리 함수
+ ************************/
+function errFunction(res, msg) {
+	return res.status(200).json({
+		status: 500,
+		message: "Error: " + msg
+	});
 }
 
 /**********************
@@ -301,6 +317,79 @@ exports.delete = async (req, res, next) => {
 				info
 			});
 		}
+	});
+
+
+}
+
+/*************************
+ * Developer: corner,
+ * Description: 회원가입 이메일 인증
+ * ***********************/
+exports.emailSignUp = async (req, res) => {
+	let auth_key = '';
+	let emailTemplates;
+
+	if (emptyJson(req.body.constructor) === true) {
+		info.message = "JSON 형식의 데이터를 입력해주세요.";
+		return res.status(200).json({
+			status: 400,
+			info
+		});
+	}
+
+	let body = req.body;
+
+	for (let key in body) {
+		if (emptyProperty(body, key) === true) {
+			info.message = `${key}가 잘못되었습니다.`;
+			return res.status(200).json({
+				status: 400,
+				info
+			});
+		}
+	}
+
+	auth_key = Math.random().toString().substring(2, 6);
+	ejs.renderFile(appDir + '/utils/authMail.ejs', {auth_key: auth_key}, async (err, data) => {
+		if (err) {
+			console.log(err);
+			await error_500(res, err);
+		}
+		emailTemplates = data;
+	});
+
+	let transporter = nodemailer.createTransport({
+		service: 'gmail',
+		host: 'smtp.gmail.com',
+		port: 587,
+		secure: false,
+		auth: {
+			user: process.env.NODEMAILER_USER,
+			pass: process.env.NODEMAILER_PASS
+		},
+	});
+
+	let mailOptions = await transporter.sendMail({
+		from: '캠핑친구24',
+		to: req.body.email,
+		subject: '회원가입을 위한 인증번호를 입력해주세요.',
+		html: emailTemplates,
+	});
+
+	transporter.sendMail(mailOptions, async (err, info) => {
+		if (err) {
+			await error_500(res, err);
+		}
+		transporter.close();
+		info = {};
+		info.type = true;
+		info.message = '인증메일이 전송 되었습니다.';
+		return res.status(200).json({
+			status: 200,
+			data: {auth_key},
+			info
+		})
 	});
 
 

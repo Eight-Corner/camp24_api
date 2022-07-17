@@ -1,0 +1,65 @@
+<html>
+
+<style>
+
+    #bg {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 15px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        text-align: center;
+        border-top: 2px solid #3f51b5;
+    }
+
+    #title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #222;
+    }
+
+    #h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #3f51b5;
+        margin: 2rem 0 3rem;
+    }
+    #p_style_option {
+        font-size: 1.5rem;
+        color: #000;
+        line-height: 2rem;
+        white-space: pre-line;
+    }
+    #code {
+        margin: 1.5rem 0;
+    }
+    #verifyCode {
+        font-size: 1.2rem;
+        color: #444;
+        background-color: #f4f4f4;
+        padding: 0 16px;
+        border-radius: 5px;
+    }
+
+</style>
+<body>
+    <div>
+        <div id="bg">
+            <div class="title">
+                <img src="https://tva1.sinaimg.cn/large/e6c9d24egy1h49rqcihm5j201s01st8i.jpg" alt="캠핑친구24">
+                <h1 id="title">캠핑친구24</h1>
+            </div>
+            <h1 id="h1">회원가입을 축하드립니다.</h1>
+            <div>
+                <p id="p_style_option">
+                    회원 가입을 위한 인증번호 입니다.<br/>
+                    아래의 인증번호를 입력하여 이메일 인증을 완료해주세요.
+                </p>
+            </div>
+            <div id="code">
+                <span id="verifyCode"><%= auth_key %></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
