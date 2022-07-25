@@ -31,7 +31,7 @@ function errFunction(res, msg) {
  * Description : 유효성 체크, JSON 형식
  **********************/
 const emptyJson = (obj) => {
-	return obj.constructor === Object && Object.key(obj).length === 0;
+	return obj.constructor === Object && Object.keys(obj).length === 0;
 }
 /**********************
  * Developer : Corner
