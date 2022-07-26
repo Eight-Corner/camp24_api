@@ -29,7 +29,7 @@ const errorHandler = (error, req, res, next) => {
 		status: res.statusCode,
 		info,
 		error: error.message,
-        stack: process.env.NODE_ENV === 'production' ? ':(' : error.stack,
+        stack: ':('
     });
 };
 
